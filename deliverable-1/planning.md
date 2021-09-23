@@ -1,4 +1,4 @@
-# YOUR PRODUCT/TEAM NAME
+# Silicon_Artists
 > _Note:_ This document is meant to evolve throughout the planning phase of your project.   That is, it makes sense for you commit regularly to this file while working on the project (especially edits/additions/deletions to the _Highlights_ section). Most importantly, it is a reflection of all the planning you work you've done in the first iteration. 
  > **This document will serve as a master plan between your team, your partner and your TA.**
 
@@ -17,13 +17,19 @@
  * Focus on *what* your product does, and avoid discussing *how* you're going to implement it.      
    For example: This is not the time or the place to talk about which programming language and/or framework you are planning to use.
  * **Feel free (and very much encouraged) to include useful diagrams, mock-ups and/or links**.
-
+### Response
+We are planning to build a website with backend for the Toronto Police Services Board to allow administators to record meeting information/minutes and display the information and agendas of these meetings to the general public.
+The website will help make Board meetings more accessible to the general public in Toronto interested in being engaged more with oversight of the Toronto Police Service
+Users: Board Administrator / Board Members. Currently the partner is using a 300 page long pdf to record this information and modifying it using Joomla CMS. This process is labour intensive and not very accessible to the public. The product will allow for all the information to be displayed clearly and for administrators to update and add to the information easily.
 
 #### Q2: Who are your target users?
 
   > Short (1 - 2 min' read max)
  * Be specific (e.g. a 'a third-year university student studying Computer Science' and not 'a student')
  * **Feel free to use personas. You can create your personas as part of this Markdown file, or add a link to an external site (for example, [Xtensio](https://xtensio.com/user-persona/)).**
+### Response
+ * Toronto Polic Services Board administrators. 
+ * Members of the public.
 
 #### Q3: Why would your users choose your product? What are they using today to solve their problem/need?
 
@@ -35,6 +41,13 @@
     * Provide users with more accurate and/or informative data (what kind of data? Why is it useful to them?)
     * Does this application exist in another form? If so, how does your differ and provide value to the users?
     * How does this align with your partner's organization's values/mission/mandate?
+ ### Response
+ * The users will use our product as it will be made specific to their purposes, and likely more modern and time effecient than current website and tools.
+ * Benefits:
+   * Saves public's time in finding the information and the readability of given information.
+   * Saves a signficant amount of administrator time.
+     * Currently they are using CMSJoogla, which takes significant of time.
+   * Current form of public records are 300 page pdf which is inconvient to use.
 
 #### Q4: How will you build it?
 
@@ -44,6 +57,17 @@
  * Describe the architecture - what are the high level components or patterns you will use? Diagrams are useful here. 
  * Will you be using third party applications or APIs? If so, what are they?
  * What is your testing strategy?
+### Response
+ * Python. PostgresSQL?
+ * Docker?
+ * ?
+ * Authentication? 
+ * Make tests. Use github actions. 
+   * Unit tests run in github actions
+   * Integration tests run manually to fully tests the app
+     * Some automatically as applicable
+   * Any tests in github actions also exist locally
+   * Add some logging at specific points
 
 #### Q5: What are the user stories that make up the MVP?
 
@@ -51,6 +75,8 @@
  * You must follow proper user story format (as taught in lecture) ```As a <user of the app>, I want to <do something in the app> in order to <accomplish some goal>```
  * User stories must contain acceptance criteria. Examples of user stories with different formats can be found here: https://www.justinmind.com/blog/user-story-examples/. **It is important that you provide a link to an artifact containing your user stories**.
  * If you have a partner, these must be reviewed and accepted by them
+### Response
+TODO: TALK TO PARTNER!!!
 
 ----
 ## Intellectual Property Confidentiality Agreement 
@@ -76,6 +102,8 @@ Describe the different roles on the team and the responsibilities associated wit
 List each team member and:
  * A description of their role(s) and responsibilities including the components they'll work on and non-software related work
  * 3 technical strengths and weaknesses each (e.g. languages, frameworks, libraries, development methodologies, etc.)
+### Response
+Roles to be assigned and discussed along with overall design and architecture as they are related to what roles we will have.
 
 #### Q7: What operational events will you have as a team?
 
@@ -88,7 +116,17 @@ Describe meetings (and other events) you are planning to have.
    * What were the outcomes of each meeting?
    * You must provide meeting minutes.
    * You must have a regular meeting schedule established by the second meeting.  
-  
+### Response
+ * Recurring meeting once a week in person (date TBD)
+   * Status updates online, one status update on progress in between weekly meetings
+   * Other meetings as needed
+   * May be additional meetings before due dates if not sufficiently completed the deliverable
+ * Weekly meeting is for planning, status updates and determining future direction. Time is variable.
+ * Code reviews: All code functionality related changes should be reviewed. (1 reviewer approval needed)
+ * For develop to main merge use pull request and have as much review as possible
+ * Descriptive names for branches
+ * General Process: branch from develop, checkout branch, modify branch, push branch, pull request, merge to develop
+
 #### Q8: What artifacts will you use to self-organize?
 
 List/describe the artifacts you will produce in order to organize your team.       
@@ -99,6 +137,12 @@ List/describe the artifacts you will produce in order to organize your team.
    * **How do you prioritize tasks?**
    * How do tasks get assigned to team members?
    * How do you determine the status of work from inception to completion?
+ ### Response
+ * Trello? (Cards, to-do lists)
+ * Two seperate online documents; one for partner meetings, other for regular/major meetings (google docs?)
+ * Trello prioritizes tasks
+ * May be assigned in meetings, or self-assigned
+ * Tags and/or stages in trello
 
 #### Q9: What are the rules regarding how your team works?
 
@@ -113,8 +157,15 @@ Describe your team's working culture.
  
 **Conflict Resolution:**
  * List at least three team scenarios/conflicts you discussed in lecture and how you decided you will resolve them. Indecisions? Non-responsive team members? Any other scenarios you can think of?
-
-
+### Response
+ * Weekly meeting, and in between weekly discord update
+ * Unknown in the professor's (TA) hands now
+ * Note who is there for meetings (minutes, i.e. meeting record google doc).
+3 Scenarios:
+ * Indecisions: Majority in general. Clearly define the multiple options before the vote.
+ * Non-Responsive team members: Talk to TA/Prof, work harder? Rule of response length: must respond within 2 days, unless within week of deadline 24 hours. ASAP in general. If night before due date, check within hour, or if busy, at least make sure to have some periods of availability.
+ * Non-completion of work: Discuss with individual. If significant issue tell TA, and report on final reflection.
+ * Partner upset with group: Beg for forgiveness? If issue on partner's side, try to record some details and talk to TA.
 
 
 ----
@@ -130,3 +181,5 @@ and/or collaborative process.
     * Explain why the option you decided on makes the most sense for your team/product/users.
  * Essentially, we want to understand how (and why) you ended up with your current product and process plan.
  * This section is useful for important information regarding your decision making process that may not necessarily fit in other sections. 
+### Response
+ * Trello. Cost vs benefits in decisions. 
