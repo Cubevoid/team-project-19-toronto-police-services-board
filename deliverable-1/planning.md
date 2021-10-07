@@ -1,10 +1,6 @@
 # Silicon_Artists
-> _Note:_ This document is meant to evolve throughout the planning phase of your project.   That is, it makes sense for you commit regularly to this file while working on the project (especially edits/additions/deletions to the _Highlights_ section). Most importantly, it is a reflection of all the planning you work you've done in the first iteration. 
- > **This document will serve as a master plan between your team, your partner and your TA.**
 
-Note: We did not commit changes to this document because we used a google doc to collaborate and make changes/adjustments as it was far more efficient and practical to use.
-
-The link to comment on it is: https://docs.google.com/document/d/1cdKVrrKk6MZdjvy1ErjGPwVgSyU_kJML0pkkXo4MGbI/edit?usp=sharing
+Google Doc version can be accessed [here](https://docs.google.com/document/d/1cdKVrrKk6MZdjvy1ErjGPwVgSyU_kJML0pkkXo4MGbI/edit?usp=sharing).
 
 ## Product Details
  
@@ -46,11 +42,13 @@ The frontend will use React js, with redux.
 We will use docker containers for deployment, building them for front and backend. This will be built and deployed automatically through github actions, and locally on a develop machine for testing. Nginx reverse proxy will be used to provide only a front door to regular web traffic, with the database on a separate server, both being hosted on AWS free tier in the cloud.
 
 ![Docker](./Images/Docker.png)
+
 (Cloud/Docker architecture from https://accenture.github.io/blog/2016/04/14/the-lightweight-docker-runtime.html)
 
 In terms of design patterns, Django implements inversion of control. Additionally both Django and React with redux are made using MVC architecture style, and we will follow this for the project for the frontend components.
 
 ![Docker](./Images/ReactMVC.png)
+
 (MVC from https://sudonull.com/post/79895-Honest-MVC-on-React-Redux-Developer-Soft-Blog)
 
 We intend to use Django for authentication, so there is no need for a separate authentication library. 
