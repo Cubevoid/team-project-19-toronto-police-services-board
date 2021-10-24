@@ -9,7 +9,9 @@ RUN pip install pipenv
 WORKDIR /app/api
 COPY Pipfile Pipfile.lock ./
 RUN pipenv install --system --deploy
-COPY . ./
+COPY meetings ./
+COPY tpsb ./
+COPY manage.py ./
 
 RUN if [ -f db.sqlite3 ]; then rm db.sqlite3; fi
 
