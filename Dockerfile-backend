@@ -5,6 +5,10 @@
 FROM python:3.9-alpine
 ENV PYTHONUNBUFFERED 1
 
+# Service must listen to $PORT environment variable.
+# This default value facilitates local development.
+ENV PORT 8000
+
 # obviously insecure
 ARG DJANGO_SUPERUSER_PASSWORD=admin
 RUN pip install pipenv
@@ -16,13 +20,8 @@ COPY meetings/ ./meetings/
 COPY tpsb/ ./tpsb/
 COPY manage.py ./
 
-RUN if [ -f db.sqlite3 ]; then rm db.sqlite3; fi
-
 RUN python manage.py migrate
 RUN python manage.py createsuperuser --username admin --email admin@example.com --noinput
 
-EXPOSE 8000
-
 # runs the development server
-ENTRYPOINT ["python", "manage.py"]
-CMD ["runserver", "0.0.0.0:$PORT"]
+CMD python manage.py runserver 0.0.0.0:$PORT
