@@ -18,7 +18,7 @@ on:
       - master
       - CI/CD  # for testing purposes
 
-name: Build and Deploy a Container
+name: Build and Deploy Backend Container
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT }}
   SERVICE: backend
@@ -27,6 +27,7 @@ env:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
     - name: Checkout
       uses: actions/checkout@v2

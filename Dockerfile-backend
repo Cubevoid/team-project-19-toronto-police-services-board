@@ -2,21 +2,27 @@
 
 # The first instruction is what image we want to base our container on
 # We Use an official Python runtime as a parent image
-FROM python:3.9
+FROM python:3.9-alpine
 ENV PYTHONUNBUFFERED 1
+
+# obviously insecure
+ARG DJANGO_SUPERUSER_PASSWORD=admin
 RUN pip install pipenv
 
-WORKDIR /app/api
+WORKDIR /src
 COPY Pipfile Pipfile.lock ./
 RUN pipenv install --system --deploy
-COPY meetings ./
-COPY tpsb ./
+COPY meetings/ ./meetings/
+COPY tpsb/ ./tpsb/
 COPY manage.py ./
 
 RUN if [ -f db.sqlite3 ]; then rm db.sqlite3; fi
 
+RUN python manage.py migrate
+RUN python manage.py createsuperuser --username admin --email admin@example.com --noinput
+
 EXPOSE 8000
 
-# runs the production server
-# ENTRYPOINT ["python", "manage.py"]
-# CMD ["runserver", "0.0.0.0:8080"]
+# runs the development server
+ENTRYPOINT ["python", "manage.py"]
+CMD ["runserver", "0.0.0.0:8000"]
