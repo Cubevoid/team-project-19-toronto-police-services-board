@@ -1,9 +1,20 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 import datetime
+from meetings import models
+import meetings
 
 # Create your views here.
-def current_datetime(request):
-    now = datetime.datetime.now()
-    html = "<html><body>It is now %s.</body></html>" % now
-    return HttpResponse(html)
+def test_homepage(request):
+    agendaitem = models.AgendaItem
+    agendaDes = models.AgendaItem.description
+    agendaRes = models.AgendaItem.result
+    agendaPos = models.AgendaItem.POSSIBLE_DECISIONS
+    agendaMotion= models.AgendaItem.motion
+    agendaAttach = models.AgendaItem.attachments
+    return render(request,'meetings/meetings_homepage.html',{
+        'agenda':agendaitem, 
+        'description':agendaDes,
+        'result': agendaRes,
+        'possible':agendaPos,
+        'motion':agendaMotion,
+        'attached':agendaAttach})
