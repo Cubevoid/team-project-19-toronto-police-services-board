@@ -21,6 +21,7 @@ jobs:
         with:
           node-version: 12
           cache: npm
+          cache-dependency-path: tpsb/frontend/package-lock.json
       - run: npm install
       - run: npm run build
 

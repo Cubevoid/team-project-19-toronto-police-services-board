@@ -46,12 +46,12 @@ jobs:
 
     - name: Build and Push Container
       uses: whoan/docker-build-with-cache-action@v5
-        with:
-          username: _json_key
-          password: "${{ secrets.GCP_SA_KEY }}"
-          registry: gcr.io
-          image_name: ${{ env.PROJECT_ID }}/${{ env.SERVICE }}
-          image_tag: latest
+      with:
+        username: _json_key
+        password: "${{ secrets.GCP_SA_KEY }}"
+        registry: gcr.io
+        image_name: ${{ env.PROJECT_ID }}/${{ env.SERVICE }}
+        image_tag: latest
         
     - name: Deploy to Cloud Run
       id: deploy
