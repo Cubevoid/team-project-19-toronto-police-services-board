@@ -16,14 +16,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Build
+      - name: Install dependencies
         uses: actions/setup-node@v2
         with:
           node-version: 12
           cache: npm
           cache-dependency-path: tpsb/frontend/package-lock.json
       - run: npm install
-      - run: npm run build
+
+      - name: Build
+        working-directory: tpsb/frontend
+        run: npm run build
 
       - name: Deploy to Firebase
         uses: FirebaseExtended/action-hosting-deploy@v0
