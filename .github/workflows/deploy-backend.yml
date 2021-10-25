@@ -18,7 +18,7 @@ on:
   push:
     branches:
       - master
-      - CI/CD  # for testing purposes
+      - CI/CD
 
 name: Build and Deploy Backend Container
 env:
@@ -45,9 +45,13 @@ jobs:
       run: gcloud auth configure-docker
 
     - name: Build and Push Container
-      run: |-
-        docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:latest -f Dockerfile-backend ./
-        docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:latest
+      uses: whoan/docker-build-with-cache-action@v5
+      with:
+        username: _json_key
+        password: "${{ secrets.GCP_SA_KEY }}"
+        registry: gcr.io
+        image_name: ${{ env.PROJECT_ID }}/${{ env.SERVICE }}
+        image_tag: latest
         
     - name: Deploy to Cloud Run
       id: deploy
