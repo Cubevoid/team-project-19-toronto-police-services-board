@@ -1,0 +1,10 @@
+{
+  "hosting": {
+    "public": "tpsb/frontend/build",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
