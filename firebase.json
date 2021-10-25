@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "tpsb/frontend/build",
+    "public": "/build",
     "ignore": [
       "firebase.json",
       "**/.*",
