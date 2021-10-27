@@ -1,17 +1,21 @@
+from datetime import datetime
 from django.db import models
 import os
+from pytz import timezone
+from tpsb.settings import TIME_ZONE
 
 from django.db.models.deletion import CASCADE
 
 # Create your models here.
 
+MEETING_TYPES = [('PUB', 'Public'), ('SPEC', 'Special'),
+                 ('CONF', 'Confidential')]
+
 
 class Meeting(models.Model):
     title = models.CharField('Meeting Title', max_length=120)
-    date = models.DateField('Meeting Date')
+    date = models.DateTimeField('Meeting Date')
     description = models.TextField('Description')
-    MEETING_TYPES = [('PUB', 'Public'), ('SPEC', 'Special'),
-                     ('CONF', 'Confidential')]
 
     meeting_type = models.CharField('Meeting Type',
                                     choices=MEETING_TYPES,
@@ -19,7 +23,9 @@ class Meeting(models.Model):
                                     default='PUB')
 
     def __str__(self) -> str:
-        return f'[{self.date}] {self.title}'
+        tz = timezone(TIME_ZONE)
+        time = self.date.astimezone(tz)
+        return f'[{time.strftime("%B %d, %Y %l:%M %p")}] {self.title}'
 
 
 class Agenda(models.Model):
@@ -45,7 +51,8 @@ class AgendaItem(models.Model):
                               default='TBC')
 
     motion = models.TextField('Motion', default="")
-    file = models.FileField('Attachment', upload_to="uploads", blank=True)  # temporary
+    file = models.FileField('Attachment', upload_to="uploads",
+                            blank=True)  # temporary
 
     def __str__(self) -> str:
         return f'[{self.result}] {self.title}'
@@ -57,7 +64,7 @@ class Attachment(models.Model):
     name = models.CharField('Name (optional)',
                             max_length=255,
                             blank=True,
-                            default="Untitled")
+                            default="Untitled File")
 
     def __str__(self) -> str:
         return f'{self.name} ({os.path.basename(self.attachment.__str__())})'
@@ -65,8 +72,8 @@ class Attachment(models.Model):
 
 class MeetingMinutes(models.Model):
     meeting = models.ForeignKey(Meeting, on_delete=CASCADE)
-    yt_link = models.URLField('Youtube Link', default="")
-    notes = models.TextField('Notes')
+    yt_link = models.URLField('Youtube Link', default="", blank=True)
+    notes = models.TextField('Notes', blank=True)
 
     def __str__(self) -> str:
         return f'{self.meeting.title} Minutes'
