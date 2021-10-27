@@ -1,9 +1,9 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-import datetime
+from rest_framework import viewsets
+from .serializers import MeetingMinutesSerializer
+from .models import MeetingMinutes
 
 # Create your views here.
-def current_datetime(request):
-    now = datetime.datetime.now()
-    html = "<html><body>It is now %s.</body></html>" % now
-    return HttpResponse(html)
+class MMView(viewsets.ModelViewSet):
+    serializer_class = MeetingMinutesSerializer
+    queryset = MeetingMinutes.objects.all()

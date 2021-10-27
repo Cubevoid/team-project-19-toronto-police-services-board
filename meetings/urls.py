@@ -1,8 +1,13 @@
 """meetings URL Configuration
 """
 from . import views
-from django.urls import path
+from django.urls import path, include 
+from rest_framework import routers
+from meetings import views
+
+router = routers.DefaultRouter()
+router.register(r'MeetingMinutes', views.MMView, 'MeetingMinutes')
 
 urlpatterns = [
-    path('test/', views.current_datetime)
+    path('api/', include(router.urls)),
 ]
