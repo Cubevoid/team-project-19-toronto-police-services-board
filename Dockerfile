@@ -9,8 +9,10 @@ ENV PYTHONUNBUFFERED 1
 # This default value facilitates local development.
 ENV PORT 8000
 
-# obviously insecure
+# obviously insecure, you should pass in a better password via environment variable
 ENV DJANGO_SUPERUSER_PASSWORD=admin
+ENV SUPERUSER_EMAIL=admin@example.com
+
 RUN pip install pipenv
 
 WORKDIR /src
@@ -20,8 +22,9 @@ COPY meetings/ ./meetings/
 COPY tpsb/ ./tpsb/
 COPY manage.py ./
 
+RUN python manage.py makemigrations
 RUN python manage.py migrate
-RUN python manage.py createsuperuser --username admin --email admin@example.com --noinput
+RUN python manage.py createsuperuser --username admin --email $SUPERUSER_EMAIL --noinput
 
 # runs the development server
 CMD python manage.py runserver 0.0.0.0:$PORT
