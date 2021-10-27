@@ -3,7 +3,7 @@ from django.db import models
 import os
 from pytz import timezone
 from tpsb.settings import TIME_ZONE
-
+from ckeditor.fields import RichTextField
 from django.db.models.deletion import CASCADE
 
 # Create your models here.
@@ -50,7 +50,7 @@ class AgendaItem(models.Model):
                               max_length=3,
                               default='TBC')
 
-    motion = models.TextField('Motion', default="")
+    motion = RichTextField('Motion', default="")
     file = models.FileField('Attachment', upload_to="uploads",
                             blank=True)  # temporary
 
@@ -73,7 +73,7 @@ class Attachment(models.Model):
 class MeetingMinutes(models.Model):
     meeting = models.ForeignKey(Meeting, on_delete=CASCADE)
     yt_link = models.URLField('Youtube Link', default="", blank=True)
-    notes = models.TextField('Notes', blank=True)
+    notes = RichTextField('Notes', blank=True)
 
     def __str__(self) -> str:
         return f'{self.meeting.title} Minutes'
