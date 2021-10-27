@@ -19,5 +19,5 @@ import meetings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('meetings/', include('meetings.urls'))
+    path('meetings/', include('meetings.urls')),
 ]

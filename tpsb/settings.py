@@ -11,6 +11,15 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import environ
+
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, True),
+    SECRET_KEY=(str, 'django-insecure-aqt+^z+i%uyjjc(d1u6k%es$=m^*8t+f(u9fni99ls30ic*(sw'),
+    BACKEND_URL=(str, 'backend-smtcuvoqba-uc.a.run.app'),
+    FRONTEND_URL=(str, 'tpsb-330016.web.app')
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,16 +29,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-aqt+^z+i%uyjjc(d1u6k%es$=m^*8t+f(u9fni99ls30ic*(sw'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
+
+BACKEND_URL = env('BACKEND_URL')
+
+FRONTEND_URL = env('FRONTEND_URL')
 
 ALLOWED_HOSTS = [
+    BACKEND_URL,
+    FRONTEND_URL,
     'localhost',
     '127.0.0.1',
     '0.0.0.0',
-    '*'
 ]
 
 
