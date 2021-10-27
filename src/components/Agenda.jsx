@@ -30,7 +30,7 @@ function Agenda() {
       <div className="container">
         <div className="row align-items-center my-5">
           <div className="col-lg-7">
-            <img src={require('./../img/agenda.png').default} />
+            <img src={require('./../img/agenda.png').default} width="100" height="90" />
           </div>
           <div className="col-lg-5">
             <h1 className="font-weight-light">Agendas</h1>

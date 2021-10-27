@@ -1,4 +1,42 @@
 import React from "react";
+import DOMPurify from 'dompurify';
+import Parser from 'html-react-parser';
+
+export default class FetchMinutes extends React.Component{
+  state = {
+    loading: true
+  };
+
+  async componentDidMount() {
+    const url = 'http://127.0.0.1:8000/meetings/api/MeetingMinutes/'
+    const response = await fetch(url);
+    const data = await response.json();
+    this.setState({meeting : data, loading : false});
+  }
+
+  render() {
+    const newItems = this.state.meeting;
+
+    if (this.state.loading) {
+      return <div>loading...</div>;
+    }
+
+    if (!this.state.meeting) {
+      return <div>didn't get a meeting</div>;
+    }
+
+    return newItems.map((item) => (
+      <div>
+        <div>Meeting: {item.meeting}</div>
+        <div>Youtube Link: {item.yt_link}</div>
+        <div>Notes: {Parser(DOMPurify.sanitize(item.notes))}</div>
+        <br></br>
+      </div>
+    ));
+  }
+}
+/*
+Old code:
 
 function Minutes() {
   return (
@@ -25,3 +63,4 @@ function Minutes() {
 }
 
 export default Minutes;
+*/
