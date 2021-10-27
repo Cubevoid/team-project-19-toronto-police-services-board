@@ -25,7 +25,7 @@ class Meeting(models.Model):
     def __str__(self) -> str:
         tz = timezone(TIME_ZONE)
         time = self.date.astimezone(tz)
-        return f'[{time.strftime("%B %d, %Y %l:%M %p")}] {self.title}'
+        return f'[{time.strftime("%B %d, %Y %I:%M %p")}] {self.title}'
 
 
 class Agenda(models.Model):

@@ -1,20 +1,9 @@
 from django.shortcuts import render
-import datetime
-from meetings import models
-import meetings
+from rest_framework import viewsets
+from .serializers import MeetingMinutesSerializer
+from .models import MeetingMinutes
 
 # Create your views here.
-def test_homepage(request):
-    agendaitem = models.AgendaItem
-    agendaDes = models.AgendaItem.description
-    agendaRes = models.AgendaItem.result
-    agendaPos = models.AgendaItem.POSSIBLE_DECISIONS
-    agendaMotion= models.AgendaItem.motion
-    agendaAttach = models.AgendaItem.attachments
-    return render(request,'meetings/meetings_homepage.html',{
-        'agenda':agendaitem, 
-        'description':agendaDes,
-        'result': agendaRes,
-        'possible':agendaPos,
-        'motion':agendaMotion,
-        'attached':agendaAttach})
+class MMView(viewsets.ModelViewSet):
+    serializer_class = MeetingMinutesSerializer
+    queryset = MeetingMinutes.objects.all()
