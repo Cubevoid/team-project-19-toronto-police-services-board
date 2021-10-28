@@ -9,3 +9,4 @@ src/
 firebase.json
 package-lock.json
 package.json
+db.sqlite3

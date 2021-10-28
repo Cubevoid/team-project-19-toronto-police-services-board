@@ -22,6 +22,7 @@ RUN pipenv install --system --deploy
 RUN python manage.py makemigrations
 RUN python manage.py migrate
 RUN python manage.py createsuperuser --username admin --email $SUPERUSER_EMAIL --noinput
+RUN python manage.py loaddata admin_interface_theme_TPSB.json
 
 # runs the development server
 CMD python manage.py runserver 0.0.0.0:$PORT
