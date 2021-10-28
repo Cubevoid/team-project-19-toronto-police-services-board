@@ -16,11 +16,8 @@ ENV SUPERUSER_EMAIL=admin@example.com
 RUN pip install pipenv
 
 WORKDIR /src
-COPY Pipfile Pipfile.lock ./
+COPY . ./
 RUN pipenv install --system --deploy
-COPY meetings/ ./meetings/
-COPY tpsb/ ./tpsb/
-COPY manage.py ./
 
 RUN python manage.py makemigrations
 RUN python manage.py migrate
