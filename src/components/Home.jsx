@@ -1,4 +1,5 @@
 import React from "react";
+import Meetings from "./Meetings";
 
 function Home() {
   return (
@@ -9,9 +10,8 @@ function Home() {
             <img src={require('./../img/tpsb_icon.png').default} />
           </div>
           <div className="col-lg-5">
-            <h1 class="font-weight-light">Home</h1>
             <p>
-              Dummy text
+              < Meetings/>
             </p>
           </div>
         </div>

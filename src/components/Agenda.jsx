@@ -1,48 +1,55 @@
-import React, { useState } from "react";
-import { Document, Page, pdfjs } from 'react-pdf/dist/umd/entry.webpack';
-import test from './../img/test.pdf';
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+import React from "react";
+import AgendaItem from "./AgendaItem.jsx"
 
-function DisplayPDF() {
-  const [numPages, setNumPages] = useState(null);
-  const [pageNumber, setPageNumber] = useState(1);
+export default class Agenda extends React.Component{
+  constructor(props) {
+    super(props);
 
-  function onDocumentLoadSuccess({ numPages }) {
-    setNumPages(numPages);
+    this.state = {
+      loading: true,
+      errors: false
+    };
   }
 
-  return (
-    <div>
-      <Document
-        file={test}
-        onLoadSuccess={onDocumentLoadSuccess}
-      >
-        <Page pageNumber={pageNumber} />
-      </Document>
-      <p>Page {pageNumber} of {numPages}</p>
-    </div>
-  );
-}
+  currentAdminUrl() {
+    return window.location.hostname.includes("localhost") ? 'http://' + window.location.hostname + ':8000/meetings/api/Agenda/' : 'https://backend-smtcuvoqba-uc.a.run.app/';
+  }
 
-function Agenda() {
-  return (
-    <div className="about">
-      <div className="container">
-        <div className="row align-items-center my-5">
-          <div className="col-lg-7">
-            <img src={require('./../img/agenda.png').default} width="100" height="90" />
-          </div>
-          <div className="col-lg-5">
-            <h1 className="font-weight-light">Agendas</h1>
-            <p>
-              <a href={test} download="test.pdf">Click to download</a>
-            </p>
-            <DisplayPDF />
-          </div>
-        </div>
+  async componentDidMount() {
+    const url = this.currentAdminUrl();
+    const response = await fetch(url)
+      .then(function(response) {
+        if (!response.ok) {
+          throw Error(response.statusText);
+        }
+        return response;
+      }).catch(error => {
+        this.setState({errors : true})
+      });
+
+    const data = this.state.errors ? null : await response.json();
+    this.setState({agenda : data, loading : false});
+  }
+
+  render() {
+    if (this.state.errors) {
+      return <div>could not retrieve agenda information</div>
+    }
+
+    if (this.state.loading) {
+      return <div></div>;
+    }
+
+    if (!this.state.agenda) {
+      return <div>didn't get an agenda</div>;
+    }
+
+    return this.state.agenda.filter(agenda => agenda.meeting === this.props.meetingId).map((item) => (
+      <div>
+        <div>MeetingId: {item.meeting}</div>
+        <AgendaItem agendaId={item.id}/>
+        <br></br>
       </div>
-    </div>
-  );
+    ));
+  }
 }
-
-export default Agenda;
