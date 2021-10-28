@@ -4,7 +4,7 @@ from .serializers import MeetingMinutesSerializer
 from .serializers import MeetingSerializer
 from .serializers import AgendaSerializer
 from .serializers import AgendaItemSerializer
-from .models import MeetingMinutes
+from .models import Minutes
 from .models import Meeting
 from .models import Agenda
 from .models import AgendaItem
@@ -12,7 +12,7 @@ from .models import AgendaItem
 # Create your views here.
 class MMView(viewsets.ModelViewSet):
     serializer_class = MeetingMinutesSerializer
-    queryset = MeetingMinutes.objects.all()
+    queryset = Minutes.objects.all()
 
 class AView(viewsets.ModelViewSet):
     serializer_class = AgendaSerializer

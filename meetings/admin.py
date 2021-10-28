@@ -5,12 +5,13 @@ from meetings.models import *
 
 class AgendaItemInline(admin.StackedInline):
     model = AgendaItem
-    extra = 1
+    extra = 0
 
 
 class AgendaAdmin(admin.ModelAdmin):
     inlines = [AgendaItemInline]
     list_display = ('meeting_title', 'meeting_date', 'meeting_type')
+    search_fields = ('meeting', )
 
     def meeting_title(self, obj):
         return obj.meeting.title
@@ -24,10 +25,13 @@ class AgendaAdmin(admin.ModelAdmin):
 
 class MeetingAdmin(admin.ModelAdmin):
     list_display = ('title', 'date', 'meeting_type')
+    list_filter = ('date', 'meeting_type')
+    search_fields = ('title', )
 
 
-class MeetingMinutesAdmin(admin.ModelAdmin):
+class MinutesAdmin(admin.ModelAdmin):
     list_display = ('meeting_title', 'meeting_date', 'meeting_type')
+    search_fields = ('meeting', )
 
     def meeting_title(self, obj):
         return obj.meeting.title
@@ -41,5 +45,5 @@ class MeetingMinutesAdmin(admin.ModelAdmin):
 
 # Register your models here.
 admin.site.register(Meeting, MeetingAdmin)
-admin.site.register(MeetingMinutes, MeetingMinutesAdmin)
+admin.site.register(Minutes, MinutesAdmin)
 admin.site.register(Agenda, AgendaAdmin)

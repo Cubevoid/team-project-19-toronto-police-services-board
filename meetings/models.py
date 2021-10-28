@@ -4,6 +4,7 @@ import os
 from pytz import timezone
 from tpsb.settings import TIME_ZONE
 from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.db.models.deletion import CASCADE
 
 # Create your models here.
@@ -15,12 +16,16 @@ MEETING_TYPES = [('PUB', 'Public'), ('SPEC', 'Special'),
 class Meeting(models.Model):
     title = models.CharField('Meeting Title', max_length=120)
     date = models.DateTimeField('Meeting Date')
-    description = models.TextField('Description')
+    recording_link = models.URLField('YouTube Link', default="", blank=True)
+    description = RichTextUploadingField('Description')
 
     meeting_type = models.CharField('Meeting Type',
                                     choices=MEETING_TYPES,
                                     max_length=4,
                                     default='PUB')
+
+    class Meta:
+        verbose_name = " Meeting"  # the space in front makes Meetings appear first
 
     def __str__(self) -> str:
         tz = timezone(TIME_ZONE)
@@ -29,7 +34,7 @@ class Meeting(models.Model):
 
 
 class Agenda(models.Model):
-    meeting = models.ForeignKey(Meeting, on_delete=CASCADE)
+    meeting = models.OneToOneField(Meeting, on_delete=CASCADE)
 
     def __str__(self) -> str:
         return f'{self.meeting.title} Agenda'
@@ -37,8 +42,9 @@ class Agenda(models.Model):
 
 class AgendaItem(models.Model):
     agenda = models.ForeignKey(Agenda, on_delete=CASCADE)
-    title = models.CharField('Title', max_length=120)
-    description = models.TextField('Description')
+    number = models.FloatField('Agenda Item Number')
+    title = models.CharField('Title (optional)', max_length=120, blank=True)
+    description = RichTextUploadingField('Description')
 
     POSSIBLE_DECISIONS = [('TBC', 'To be considered'),
                           ('CUC', 'Currently under consideration'),
@@ -50,7 +56,7 @@ class AgendaItem(models.Model):
                               max_length=3,
                               default='TBC')
 
-    motion = RichTextField('Motion', default="")
+    motion = RichTextUploadingField('Motion (if applicable)', default="", blank=True)
     file = models.FileField('Attachment', upload_to="uploads",
                             blank=True)  # temporary
 
@@ -70,14 +76,12 @@ class Attachment(models.Model):
         return f'{self.name} ({os.path.basename(self.attachment.__str__())})'
 
 
-class MeetingMinutes(models.Model):
-    meeting = models.ForeignKey(Meeting, on_delete=CASCADE)
-    yt_link = models.URLField('Youtube Link', default="", blank=True)
-    notes = RichTextField('Notes', blank=True)
+class Minutes(models.Model):
+    meeting = models.OneToOneField(Meeting, on_delete=CASCADE)
+    notes = RichTextUploadingField('Notes', blank=True)
 
     def __str__(self) -> str:
         return f'{self.meeting.title} Minutes'
 
     class Meta:
-        verbose_name = "Meeting Minutes"
-        verbose_name_plural = "Meeting Minutes"
+        verbose_name_plural = "Minutes"
