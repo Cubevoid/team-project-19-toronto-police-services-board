@@ -3,10 +3,14 @@ import DOMPurify from 'dompurify';
 import Parser from 'html-react-parser';
 
 export default class FetchMinutes extends React.Component{
-  state = {
-    loading: true,
-    errors: false
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loading: true,
+      errors: false
+    };
+  }
 
   currentAdminUrl() {
     return window.location.hostname.includes("localhost") ? 'http://' + window.location.hostname + ':8000/meetings/api/MeetingMinutes/' : 'https://backend-smtcuvoqba-uc.a.run.app/';
@@ -36,17 +40,17 @@ export default class FetchMinutes extends React.Component{
     }
 
     if (this.state.loading) {
-      return <div>loading...</div>;
+      return <div></div>;
     }
 
     if (!this.state.meeting) {
       return <div>didn't get a meeting</div>;
     }
 
-    return newItems.map((item) => (
+    return newItems.filter(minute => minute.meeting === this.props.meetingId).map((item) => (
       <div>
-        <div>Meeting: {item.meeting}</div>
-        <div>Youtube Link: {item.yt_link}</div>
+        <div>MeetingId: {item.meeting}</div>
+        <div><a href={item.yt_link}>Youtube Link</a></div>
         <div>Notes: {Parser(DOMPurify.sanitize(item.notes))}</div>
         <br></br>
       </div>

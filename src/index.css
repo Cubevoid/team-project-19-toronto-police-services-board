@@ -93,6 +93,7 @@ a {
 table {
   width: 100%;
   border-spacing: 0;
+  border: none;
 }
 
 input {
@@ -104,6 +105,7 @@ input {
 td {
   text-align: center;
   padding: 5px;
+  border: none;
 }
 
 .tm-text-left { text-align: left; }
@@ -113,6 +115,7 @@ th {
   font-weight: 600;
   font-size: 1.1rem;
   padding: 5px;
+  border: none;
 }
 
 tr:nth-child(1) { background-color: #e5e8ed; }
@@ -136,43 +139,58 @@ tr.tm-tr-header {
 .meeting-details {
   justify-content: center;
   max-width: 60%;
+  min-width: 280px;
   align-items: center;
   float: none;
   margin: 0 auto;
   margin-top: 2rem;
-  border: solid grey 1px;
+  padding-left: 0.3rem;
+  border: solid #DCDCDC 1px;
 }
 
-.agenda-minutes-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-left: 1rem;
-  margin-left: 30%;
+.agenda-minutes-header-left {
+  display: inline-block;
+  vertical-align: top;
+  width: 50%;
+  justify-content: left;
+}
+
+.agenda-minutes-header-right {
+  display: inline-block;
+  vertical-align: top;
+  width: 50%;
+  justify-content: right;
 }
 
 .nav-agenda-minute-1 {
-  width: calc(var(--nav-size) * 2);
   display: flex;
-  align-items: right;
-  justify-content: right;
-  padding-left: 1rem;
-}
-
-.nav-agenda-minute-2 {
-  width: calc(var(--nav-size) * 2);
-  display: flex;
-  align-items: right;
-  float: right;
-  justify-content: right;
-  padding-left: 1rem;
+  align-items: center;
+  justify-content: center;
+  padding-top: 0.6rem;
 }
 
 .sub-nav-text {
   color: black;
   font-weight: bolder;
+  justify-content: right;
+  padding: 0.5rem;
+  border: 1px solid #DCDCDC;
+}
+
+.sub-nav-text:hover {
+  color: #B0C4DE;
+  border-color: #B0C4DE;
 }
 
 .meeting-text-output {
   overflow-y: auto;
+}
+
+.header {
+  font-weight: 200;
+}
+
+.download-attach {
+  color: grey;
+  text-decoration: underline;
 }

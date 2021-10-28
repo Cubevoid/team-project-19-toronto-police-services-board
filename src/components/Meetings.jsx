@@ -9,7 +9,6 @@ class Meetings extends React.Component {
 
     this.state = {
       meetings: {},
-      currentMeeting: {},
       loading: true,
       agenda: true
     };
@@ -40,7 +39,7 @@ class Meetings extends React.Component {
   }
 
   displayAgendaOrMinutes() {
-    return this.state.agenda ? <Agenda /> : <Minutes />;
+    return this.state.agenda ? <Agenda meetingId={this.state.currentMeeting.id}/> : <Minutes meetingId={this.state.currentMeeting.id}/>;
   }
 
   meetingLabel() {
@@ -59,13 +58,37 @@ class Meetings extends React.Component {
     this.setState({currentMeeting: meeting});
   }
 
+  displayMeetingDetails() {
+    return <div className="meeting-details" border="1">
+      <div className="agenda-minutes-header-left">
+        <h1>{this.meetingLabel()}</h1>
+      </div>
+      <ul className="agenda-minutes-header-right">
+        <li className="nav-agenda-minute-1">
+          <a href="#" className="sub-nav-text" onClick={() => this.setAgendaOpen()}>
+            Read Agenda
+          </a>
+        </li>
+        <li className="nav-agenda-minute-1">
+          <a href="#" className="sub-nav-text" onClick={() => this.setMinuteOpen()}>
+            Read Minutes
+          </a>
+        </li>
+      </ul>
+      <h1 className="header">{this.subTextLabel()}</h1>
+      <div className="meeting-text-output">
+        {this.displayAgendaOrMinutes()}
+      </div>
+    </div>
+  }
+
   render() {
     if (this.state.errors) {
       return <div>could not retrieve meeting information</div>
     }
 
     if (this.state.loading) {
-      return <div>loading...</div>;
+      return <div></div>;
     }
 
     if (!this.state.meetings) {
@@ -82,10 +105,12 @@ class Meetings extends React.Component {
                 <th>Title</th>
                 <th>Type</th>
               </tr>
-              {this.state.meetings.map((meeting) => {
+              {this.state.meetings.sort((a, b) =>
+                new Date(...b.date.substring(0, b.date.indexOf('T')).split('/').reverse()) -
+                new Date(...a.date.substring(0, a.date.indexOf('T')).split('/').reverse())).map((meeting) => {
                 return <Fragment>
                   <tr key={meeting.id} onClick={() => this.setCurrentMeeting(meeting)}>
-                    <td>{meeting.date}</td>
+                    <td>{meeting.date.substring(0, meeting.date.indexOf('T'))}</td>
                     <td>{meeting.title}</td>
                     <td>{meeting.meeting_type}</td>
                   </tr>
@@ -94,25 +119,7 @@ class Meetings extends React.Component {
             </tbody>
           </table>
         </div>
-        <div className="meeting-details" border="1">
-          <div className="agenda-minutes-header">
-            <h1>{this.meetingLabel()}</h1>
-            <li className="nav-agenda-minute-1">
-              <a href="#" className="sub-nav-text" onClick={() => this.setAgendaOpen()}>
-                Read Agenda
-              </a>
-            </li>
-            <li className="nav-agenda-minute-2">
-              <a href="#" className="sub-nav-text" onClick={() => this.setMinuteOpen()}>
-                Read Minutes
-              </a>
-            </li>
-          </div>
-          <h1>{this.subTextLabel()}</h1>
-          <div className="meeting-text-output">
-            {this.displayAgendaOrMinutes()}
-          </div>
-        </div>
+        {this.state.currentMeeting && this.displayMeetingDetails()}
       </div>
     );
   }

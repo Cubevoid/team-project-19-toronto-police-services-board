@@ -9,6 +9,7 @@ router = routers.DefaultRouter()
 router.register(r'MeetingMinutes', views.MMView, 'MeetingMinutes')
 router.register(r'Meeting', views.MView, 'Meeting')
 router.register(r'Agenda', views.AView, 'Agenda')
+router.register(r'AgendaItem', views.AIView, 'AgendaItem')
 
 urlpatterns = [
     path('api/', include(router.urls)),

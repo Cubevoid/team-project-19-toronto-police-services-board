@@ -1,10 +1,15 @@
 import React from "react";
+import AgendaItem from "./AgendaItem.jsx"
 
 export default class Agenda extends React.Component{
-  state = {
-    loading: true,
-    errors: false
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loading: true,
+      errors: false
+    };
+  }
 
   currentAdminUrl() {
     return window.location.hostname.includes("localhost") ? 'http://' + window.location.hostname + ':8000/meetings/api/Agenda/' : 'https://backend-smtcuvoqba-uc.a.run.app/';
@@ -23,27 +28,26 @@ export default class Agenda extends React.Component{
       });
 
     const data = this.state.errors ? null : await response.json();
-    this.setState({meeting : data, loading : false});
+    this.setState({agenda : data, loading : false});
   }
 
   render() {
-    const newItems = this.state.meeting;
-
     if (this.state.errors) {
       return <div>could not retrieve agenda information</div>
     }
 
     if (this.state.loading) {
-      return <div>loading...</div>;
+      return <div></div>;
     }
 
-    if (!this.state.meeting) {
+    if (!this.state.agenda) {
       return <div>didn't get an agenda</div>;
     }
 
-    return newItems.map((item) => (
+    return this.state.agenda.filter(agenda => agenda.meeting === this.props.meetingId).map((item) => (
       <div>
-        <div>Meeting: {item.meeting}</div>
+        <div>MeetingId: {item.meeting}</div>
+        <AgendaItem agendaId={item.id}/>
         <br></br>
       </div>
     ));
