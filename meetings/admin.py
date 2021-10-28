@@ -5,7 +5,7 @@ from meetings.models import *
 
 class AgendaItemInline(admin.StackedInline):
     model = AgendaItem
-    extra = 1
+    extra = 0
 
 
 class AgendaAdmin(admin.ModelAdmin):
