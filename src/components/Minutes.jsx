@@ -4,18 +4,36 @@ import Parser from 'html-react-parser';
 
 export default class FetchMinutes extends React.Component{
   state = {
-    loading: true
+    loading: true,
+    errors: false
   };
 
+  currentAdminUrl() {
+    return window.location.hostname.includes("localhost") ? 'http://' + window.location.hostname + ':8000/meetings/api/MeetingMinutes/' : 'https://backend-smtcuvoqba-uc.a.run.app/';
+  }
+
   async componentDidMount() {
-    const url = 'http://127.0.0.1:8000/meetings/api/MeetingMinutes/'
-    const response = await fetch(url);
-    const data = await response.json();
+    const url = this.currentAdminUrl();
+    const response = await fetch(url)
+      .then(function(response) {
+        if (!response.ok) {
+          throw Error(response.statusText);
+        }
+        return response;
+      }).catch(error => {
+        this.setState({errors : true})
+      });
+
+    const data = this.state.errors ? null : await response.json();
     this.setState({meeting : data, loading : false});
   }
 
   render() {
     const newItems = this.state.meeting;
+
+    if (this.state.errors) {
+      return <div>could not retrieve meeting minutes information</div>
+    }
 
     if (this.state.loading) {
       return <div>loading...</div>;
@@ -35,32 +53,3 @@ export default class FetchMinutes extends React.Component{
     ));
   }
 }
-/*
-Old code:
-
-function Minutes() {
-  return (
-    <div className="contact">
-      <div class="container">
-        <div class="row align-items-center my-5">
-          <div class="col-lg-7">
-            <img
-              class="img-fluid rounded mb-4 mb-lg-0"
-              src="http://placehold.it/900x400"
-              alt=""
-            />
-          </div>
-          <div class="col-lg-5">
-            <h1 class="font-weight-light">Minutes</h1>
-            <p>
-              Dummy text
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export default Minutes;
-*/

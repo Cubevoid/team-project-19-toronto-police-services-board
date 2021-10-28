@@ -3,7 +3,7 @@ import { Link, withRouter } from "react-router-dom";
 
 function NavItem(props) {
 
-const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   return (
     <li className="nav-item">
@@ -46,14 +46,16 @@ function DropdownName(props) {
   return text;
 }
 
+function currentAdminUrl() {
+  return window.location.hostname.includes("localhost") ? 'http://' + window.location.hostname + ':8000/admin/' : 'https://backend-smtcuvoqba-uc.a.run.app/';
+}
+
 function Navigation(props) {
   return (
     <div className="navigation">
       <nav className="navbar">
         <ul className="navbar-nav">
-          <NavItem text = <DropdownName text = {window.location.pathname}/>>
-            <DropdownMenu />
-          </NavItem>
+          <a href={currentAdminUrl()} onClick={() => window.location.href = currentAdminUrl()}>Admin website</a>
         </ul>
       </nav>
     </div>
