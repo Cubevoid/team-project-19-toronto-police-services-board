@@ -70,6 +70,11 @@ class Meetings extends React.Component {
           </a>
         </li>
         <li className="nav-agenda-minute-1">
+          <a href={this.state.currentMeeting.recording_link} className="sub-nav-text">
+            View on Youtube
+          </a>
+        </li>
+        <li className="nav-agenda-minute-1">
           <a href="#" className="sub-nav-text" onClick={() => this.setMinuteOpen()}>
             Read Minutes
           </a>

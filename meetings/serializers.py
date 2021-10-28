@@ -7,7 +7,7 @@ from .models import Meeting
 class MeetingMinutesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Minutes
-        fields = ('id','meeting', 'yt_link', 'notes')
+        fields = ('id','meeting', 'notes')
 
 class AgendaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -22,4 +22,4 @@ class AgendaItemSerializer(serializers.ModelSerializer):
 class MeetingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Meeting
-        fields = ('id','title', 'date', 'description', 'meeting_type')
+        fields = ('id','title', 'date', 'recording_link', 'description', 'meeting_type')

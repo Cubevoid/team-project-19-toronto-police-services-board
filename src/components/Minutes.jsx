@@ -13,7 +13,7 @@ export default class FetchMinutes extends React.Component{
   }
 
   currentAdminUrl() {
-    return window.location.hostname.includes("localhost") ? 'http://' + window.location.hostname + ':8000/meetings/api/MeetingMinutes/' : 'https://backend-smtcuvoqba-uc.a.run.app/';
+    return window.location.hostname.includes("localhost") ? 'http://' + window.location.hostname + ':8000/meetings/api/Minutes/' : 'https://backend-smtcuvoqba-uc.a.run.app/';
   }
 
   async componentDidMount() {
@@ -50,7 +50,6 @@ export default class FetchMinutes extends React.Component{
     return newItems.filter(minute => minute.meeting === this.props.meetingId).map((item) => (
       <div>
         <div>MeetingId: {item.meeting}</div>
-        <div><a href={item.yt_link}>Youtube Link</a></div>
         <div>Notes: {Parser(DOMPurify.sanitize(item.notes))}</div>
         <br></br>
       </div>
