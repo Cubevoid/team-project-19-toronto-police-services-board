@@ -1,3 +1,12 @@
+.firebase/
 .github/
 .vscode/
-*/frontend/
+deliverable*
+node_modules/
+public/
+src/
+.firebaserc
+firebase.json
+package-lock.json
+package.json
+db.sqlite3

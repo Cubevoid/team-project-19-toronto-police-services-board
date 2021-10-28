@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from .models import MeetingMinutes
+from .models import Minutes
 
 class MeetingMinutesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = MeetingMinutes
+        model = Minutes
         fields = ('id','meeting', 'yt_link', 'notes')

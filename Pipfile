@@ -10,6 +10,7 @@ django-cors-headers = "*"
 requests = "*"
 django-ckeditor = "*"
 django-environ = "*"
+django-admin-interface = "*"
 
 [dev-packages]
 

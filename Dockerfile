@@ -16,15 +16,13 @@ ENV SUPERUSER_EMAIL=admin@example.com
 RUN pip install pipenv
 
 WORKDIR /src
-COPY Pipfile Pipfile.lock ./
+COPY . ./
 RUN pipenv install --system --deploy
-COPY meetings/ ./meetings/
-COPY tpsb/ ./tpsb/
-COPY manage.py ./
 
 RUN python manage.py makemigrations
 RUN python manage.py migrate
 RUN python manage.py createsuperuser --username admin --email $SUPERUSER_EMAIL --noinput
+RUN python manage.py loaddata admin_interface_theme_TPSB.json
 
 # runs the development server
 CMD python manage.py runserver 0.0.0.0:$PORT
