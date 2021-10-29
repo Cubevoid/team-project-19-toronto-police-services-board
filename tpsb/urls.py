@@ -14,15 +14,22 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
 from django.shortcuts import redirect
 from tpsb.settings import FRONTEND_URL
 
+
+def add_slash(request):
+    return redirect(request.path + "/")
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('meetings.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
-    path('', lambda request: redirect('http://' + FRONTEND_URL)),  # redirect root to frontend
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # TODO: make this secure
+    path('', lambda request: redirect('admin/', permanent=True)),
+    re_path(r'^.*[^/]$', add_slash),
+] + static(settings.MEDIA_URL,
+           document_root=settings.MEDIA_ROOT)  # TODO: make this secure
