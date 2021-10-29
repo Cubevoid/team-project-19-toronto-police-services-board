@@ -1,8 +1,10 @@
 import React from "react";
 import DOMPurify from 'dompurify';
 import Parser from 'html-react-parser';
+import BackendMethods from "./BackendMethods";
 
-export default class AgendaItem extends React.Component{
+export default class AgendaItem extends BackendMethods{
+
   constructor(props) {
     super(props);
 
@@ -10,26 +12,7 @@ export default class AgendaItem extends React.Component{
       loading: true,
       errors: false
     };
-  }
-
-  currentAdminUrl() {
-    return window.location.hostname.includes("localhost") ? 'http://' + window.location.hostname + ':8000/meetings/api/AgendaItem/' : 'https://backend-smtcuvoqba-uc.a.run.app/';
-  }
-
-  async componentDidMount() {
-    const url = this.currentAdminUrl();
-    const response = await fetch(url)
-      .then(function(response) {
-        if (!response.ok) {
-          throw Error(response.statusText);
-        }
-        return response;
-      }).catch(error => {
-        this.setState({errors : true})
-      });
-
-    const data = this.state.errors ? null : await response.json();
-    this.setState({agendaItem : data, loading : false});
+    this.ITEM = 'AgendaItem/'
   }
 
   render() {
@@ -42,11 +25,11 @@ export default class AgendaItem extends React.Component{
       return <div></div>;
     }
 
-    if (!this.state.agendaItem) {
+    if (!this.state.data) {
       return <div>didn't get an agenda</div>;
     }
 
-    return this.state.agendaItem.filter(agendaItem => agendaItem.agenda === this.props.agendaId).map((item) => (
+    return this.state.data.filter(data => data.agenda === this.props.agendaId).map((item) => (
       <div>
         <div>AgendaId: {item.agenda}</div>
         <div>Title: {item.title}</div>
