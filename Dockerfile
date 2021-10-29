@@ -9,9 +9,16 @@ ENV PYTHONUNBUFFERED 1
 # This default value facilitates local development.
 ENV PORT 8000
 
+# TODO: set up proper production webserver and set DEBUG to False
+ENV DEBUG "True"
+
+ENV BACKEND_URL "0.0.0.0:$PORT"
+ENV FRONTEND_URL "localhost:3000"
+ENV SECRET_KEY = "django-insecure-aqt+^z+i%uyjjc(d1u6k%es$=m^*8t+f(u9fni99ls30ic*(sw"
+
 # obviously insecure, you should pass in a better password via environment variable
-ENV DJANGO_SUPERUSER_PASSWORD=admin
-ENV SUPERUSER_EMAIL=admin@example.com
+ARG DJANGO_SUPERUSER_PASSWORD=admin
+ARG SUPERUSER_EMAIL=admin@example.com
 
 RUN pip install pipenv
 

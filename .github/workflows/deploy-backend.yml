@@ -52,6 +52,7 @@ jobs:
         registry: gcr.io
         image_name: ${{ env.PROJECT_ID }}/${{ env.SERVICE }}
         image_tag: latest
+        build_extra_args: "--build-arg BACKEND_URL=backend-smtcuvoqba-uc.a.run.app --build-arg FRONTEND_URL=tpsb-330016.web.app"
         
     - name: Deploy to Cloud Run
       id: deploy

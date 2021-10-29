@@ -12,5 +12,5 @@ router.register(r'Agenda', views.AView, 'Agenda')
 router.register(r'AgendaItem', views.AIView, 'AgendaItem')
 
 urlpatterns = [
-    path('api/', include(router.urls)),
+    path('', include(router.urls)),
 ]
