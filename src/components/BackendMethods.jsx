@@ -4,7 +4,7 @@ export default class BackendMethods extends React.Component {
   PATH = '8080'
   ITEM = 'AgendaItem/'
   currentAdminUrl() {
-    return window.location.hostname.includes("localhost") ? 'http://' + window.location.hostname + ':' + this.PATH + '/backend/api/' + this.ITEM : 'https://backend-smtcuvoqba-uc.a.run.app/';
+    return window.location.hostname.includes("localhost") ? 'http://' + window.location.hostname + ':' + this.PATH + '/backend/api/' + this.ITEM : 'https://backend-smtcuvoqba-uc.a.run.app/' + '/backend/api/' + this.ITEM;
   }
 
   async componentDidMount() {
