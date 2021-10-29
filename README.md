@@ -21,6 +21,8 @@ The admin site where the agendas and meeting minutes are managed is the Django A
 
 A member of the public can access the public-facing side of the application without logging in. On the homepage they will be able to select an upcoming or past meeting. After selecting a meeting, they are able to view the meeting agenda and the minutes in their browser, but they can also download a PDF of the Agenda if it has been posted. Also, if the admin has provided a YouTube link to the meeting recording in the minutes, then the website will show an embedded YouTube video of the meeting.
 
+The admin site can be accessed at [backend-smtcuvoqba-uc.a.run.app](https://backend-smtcuvoqba-uc.a.run.app) and the frontend site can be accessed at [tpsb-330016.web.app](https://tpsb-330016.web.app).
+
 ## Development requirements
 
 *Languages: Python 3.9 (Pipenv) and Node 12 (npm).*

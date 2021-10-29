@@ -12,18 +12,19 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import environ
+import os
 
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, True),
-    SECRET_KEY=(str, 'django-insecure-aqt+^z+i%uyjjc(d1u6k%es$=m^*8t+f(u9fni99ls30ic*(sw'),
-    BACKEND_URL=(str, 'backend-smtcuvoqba-uc.a.run.app'),
-    FRONTEND_URL=(str, 'tpsb-330016.web.app')
-)
+    SECRET_KEY=(
+        str,
+        'django-insecure-aqt+^z+i%uyjjc(d1u6k%es$=m^*8t+f(u9fni99ls30ic*(sw'),
+    BACKEND_URL=(str, '0.0.0.0:8000'),
+    FRONTEND_URL=(str, 'localhost:3000'))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -46,23 +47,14 @@ ALLOWED_HOSTS = [
     '0.0.0.0',
 ]
 
-
 # Application definition
 
 INSTALLED_APPS = [
-    'admin_interface',
-    'colorfield',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'corsheaders',
-    'rest_framework',
-    'meetings',
-    'ckeditor',
-    'ckeditor_uploader'
+    'admin_interface', 'colorfield', 'django.contrib.admin',
+    'django.contrib.auth', 'django.contrib.contenttypes',
+    'django.contrib.sessions', 'django.contrib.messages',
+    'django.contrib.staticfiles', 'corsheaders', 'rest_framework', 'meetings',
+    'ckeditor', 'ckeditor_uploader'
 ]
 
 MIDDLEWARE = [
@@ -98,7 +90,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'tpsb.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
@@ -109,25 +100,27 @@ DATABASES = {
     }
 }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME':
+        'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME':
+        'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME':
+        'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME':
+        'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -142,12 +135,11 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = 'static'
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 CKEDITOR_UPLOAD_PATH = 'uploads'
 
 # Default primary key field type
@@ -155,6 +147,4 @@ CKEDITOR_UPLOAD_PATH = 'uploads'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ORIGIN_WHITELIST = [
-     'http://localhost:3000'
-]
+CORS_ORIGIN_WHITELIST = ['http://localhost:3000']
