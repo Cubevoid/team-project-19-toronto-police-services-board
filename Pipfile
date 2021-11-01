@@ -1,0 +1,21 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+Django = "*"
+djangorestframework = "*"
+django-cors-headers = "*"
+requests = "*"
+django-ckeditor = "*"
+django-environ = "*"
+django-admin-interface = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"
+
+[scripts]
+tests = "python3 manage.py test"
