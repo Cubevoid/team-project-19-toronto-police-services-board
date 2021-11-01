@@ -1,27 +1,37 @@
-# Silicon Artists
+# Silicon_Artists
 
 ## Description
 
-We are building a website with a backend for the Toronto Police Services Board to allow administrators to record meeting information/minutes and display the information and agendas of these meetings to the general public. The website will help make Board meetings more accessible to the general public in Toronto interested in being engaged more with oversight of the Toronto Police Service Users: Board Administrator / Board Members. Currently the partner is using a 300-page long PDF to record this information and modifying it using Joomla CMS. This process is labour intensive and not very accessible to the public. The product will allow for all the information to be displayed clearly and for administrators to update and add to the information easily.
+We are building a website with a backend for the Toronto Police Services Board to allow administrators to record meeting information/minutes and display the information and agendas of these meetings to the general public. The website will help make Board meetings more accessible to the general public in Toronto interested in being engaged with oversight of the Toronto Police Service Users: Board Administrator / Board Members. The website will also allow for more straightforward modification and recording of information directly related to tpsb meetings, to assist board admisistrators.
+
+Currently the partner is using a 300-page long PDF to record this information and modifying it using Joomla CMS. This process is labour intensive and not very accessible to the public. The product will allow for all the information to be displayed clearly and for administrators to update and add to the information easily.
 
 ## Key Features
 
-The key features the application needs to provide are the agendas and the meeting minutes. For both of these, the administrator (Diana) needs to be able to create, edit, and manage them through the admin side of the application. Agendas will have Agenda Items which may include rich text and attachments, as well as the decision that was reached during the meeting. Meeting minutes also have rich text and will include a YouTube link to the meeting recording.
+The key features that are currently accessible to the user are the ability to create, delete, edit and modify meetings, and their respective meeting agendas, agenda items and minutes on the admin site, accessible only to the administrator behind username/password. The other main feature is that the information in these are accessible to everyone through the main website, where one can observe any created meeting’s information, reading the agenda or minute information, all displayed there.
+Meetings represent a given tpsb meeting, having a date, title, and optionally an agenda, a youtube link to a recording of the meeting and/or a minutes document.
 
-On the other side of the application, a user from the general public needs to be able to access public agendas and meeting minutes through the frontend. Ideally, the user is able to access them in both HTML and PDF formats.
+Each agenda has an agenda item for each proposal or proposition planned to be discussed in the meeting, and there is only at most one agenda in each meeting. The agenda items have rich text editing options, and are numbered. Each agenda item also can have an attachment, such as a powerpoint or image for relevant proposal or discussion, motions carried forth upon the item, and result status of the proposal.
+Each minute has rich text, and would theoretically have records and times of the completion and decision result on items in the Agenda.
 
-Full list of feature requirements from partner: 
-https://docs.google.com/document/d/1OiMUVkmLtp8k1CTZHFGiqfV4dzAGzjcG/edit?usp=sharing&ouid=101500265431798349247&rtpof=true&sd=true
+These are all displayed on the publicly accessible frontend.
 
 ## Instructions
 
-There are two different types of end users for the application: the admin (Diana) and the member of the public. Only the admins need to log into the site in order to make changes to the agendas and meeting minutes. For this, an admin user is pre-created at deployment, and then this admin can manage other users if need be.
+The admin site can be accessed at [https://backend-smtcuvoqba-uc.a.run.app](https://backend-smtcuvoqba-uc.a.run.app) and the frontend site can be accessed at [https://tpsb-330016.web.app](https://tpsb-330016.web.app).
+The admin site has a pre-created account, a superuser, and that user may create additional users.
 
-The admin site where the agendas and meeting minutes are managed is the Django Admin Site. After the admin logs in, they can create a Meeting with various fields such as a title and date. Each meeting can have an Agenda and Meeting Minutes, which can be created under the Meeting. The Agenda will be a list of Agenda Items, possibly with one or more attachments. After the Agenda has been created, the admin can manage the Meeting Minutes. The admin decides when they want to generate a PDF of the entire meeting agenda and post it to the public website.
+Credentials for admin site are: Username: `admin`, password: `admin`
 
-A member of the public can access the public-facing side of the application without logging in. On the homepage they will be able to select an upcoming or past meeting. After selecting a meeting, they are able to view the meeting agenda and the minutes in their browser, but they can also download a PDF of the Agenda if it has been posted. Also, if the admin has provided a YouTube link to the meeting recording in the minutes, then the website will show an embedded YouTube video of the meeting.
+The admin website has option to create new or edit existing meetings, agendas and meetings, done by clicking on the plus to the right of the item names along the left. (There is also an option in the top right after selecting one them) It is where all changes to the database and backend are sent from.
 
-The admin site can be accessed at [backend-smtcuvoqba-uc.a.run.app](https://backend-smtcuvoqba-uc.a.run.app) and the frontend site can be accessed at [tpsb-330016.web.app](https://tpsb-330016.web.app).
+One can also view all sets of items. Agenda items are all visible and addable when selecting an Agenda, as all Agenda items belong to a particular Agenda.
+
+![admin-site](/deliverable-2/images/django-backend.png)
+
+The changes there are all visible on the frontend website. All meetings are displayed in order of most recent date. Clicking on a meeting displays a box below where one may read the agenda or meeting information dictated in the admin site. Attachments are downloadable from the frontend, however they do not display there at the moment.
+
+With out current cloud database, all information is stored temporarily on the free tier. So after about 30 minutes of inactivity the information will be deleted. This will be resolved by deliverable 3.
 
 ## Development requirements
 
