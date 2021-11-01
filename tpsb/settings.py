@@ -147,4 +147,8 @@ CKEDITOR_UPLOAD_PATH = 'uploads'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ORIGIN_WHITELIST = ['http://localhost:3000']
+CORS_ORIGIN_WHITELIST = [
+     'http://localhost:3000',
+     'http://' + FRONTEND_URL,
+     'https://' + FRONTEND_URL
+]

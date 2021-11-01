@@ -12,9 +12,8 @@ ENV PORT 8000
 # TODO: set up proper production webserver and set DEBUG to False
 ENV DEBUG "True"
 
-ENV BACKEND_URL "0.0.0.0:$PORT"
-ENV FRONTEND_URL "localhost:3000"
-ENV SECRET_KEY = "django-insecure-aqt+^z+i%uyjjc(d1u6k%es$=m^*8t+f(u9fni99ls30ic*(sw"
+ARG BACKEND_URL "0.0.0.0:$PORT"
+ARG FRONTEND_URL "localhost:3000"
 
 # obviously insecure, you should pass in a better password via environment variable
 ARG DJANGO_SUPERUSER_PASSWORD=admin
@@ -30,6 +29,9 @@ RUN python manage.py makemigrations
 RUN python manage.py migrate
 RUN python manage.py createsuperuser --username admin --email $SUPERUSER_EMAIL --noinput
 RUN python manage.py loaddata admin_interface_theme_TPSB.json
+
+ENV BACKEND_URL ${BACKEND_URL}
+ENV FRONTEND_URL ${FRONTEND_URL}
 
 # runs the development server
 CMD python manage.py runserver 0.0.0.0:$PORT
