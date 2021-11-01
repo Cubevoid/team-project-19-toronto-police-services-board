@@ -17,7 +17,7 @@
 on:
   push:
     branches:
-      - master
+      - main
       - CI/CD
 
 name: Build and Deploy Backend Container
