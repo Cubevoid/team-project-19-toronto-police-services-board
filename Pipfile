@@ -11,6 +11,7 @@ requests = "*"
 django-ckeditor = "*"
 django-environ = "*"
 django-admin-interface = "*"
+fpdf = "*"
 
 [dev-packages]
 
