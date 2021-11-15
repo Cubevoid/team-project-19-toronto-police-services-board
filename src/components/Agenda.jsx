@@ -10,10 +10,10 @@ export default class Agenda extends BackendMethods{
       loading: true,
       errors: false
     };
-    this.ITEM = "Agenda/"
   }
 
   render() {
+    this.SUBITEM = this.props.meetingId + '/Agenda/'
     if (this.state.errors) {
       return <div>could not retrieve agenda information</div>
     }
@@ -29,7 +29,7 @@ export default class Agenda extends BackendMethods{
     return this.state.data.filter(data => data.meeting === this.props.meetingId).map((item) => (
       <div>
         <div>MeetingId: {item.meeting}</div>
-        <AgendaItem agendaId={item.id}/>
+        <AgendaItem meetingId = {this.props.meetingId}agendaId={item.id}/>
         <br></br>
       </div>
     ));

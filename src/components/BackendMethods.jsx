@@ -1,10 +1,12 @@
 import React from "react";
 
 export default class BackendMethods extends React.Component {
-  PATH = '8080'
-  ITEM = 'AgendaItem/'
+  PATH = '8000'
+  ITEM = 'Meeting/'
+  SUBITEM = ''
+  SUBSUBITEM = ''
   currentAdminUrl() {
-    return window.location.hostname.includes("localhost") ? 'http://' + window.location.hostname + ':' + this.PATH + '/api/' + this.ITEM : 'https://backend-smtcuvoqba-uc.a.run.app/' + 'api/' + this.ITEM;
+    return window.location.hostname.includes("localhost") ? 'http://' + window.location.hostname + ':' + this.PATH + '/api/' + this.ITEM + this.SUBITEM + this.SUBSUBITEM : 'https://backend-smtcuvoqba-uc.a.run.app/' + 'api/' + this.ITEM;
   }
 
   async componentDidMount() {
