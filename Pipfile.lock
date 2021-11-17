@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "e3d1e7bad1c39bd285ccefea269df65e047753d924311565fd4e3a015032f211"
+            "sha256": "d08baf632b4b4ef3120cedf764545ea7be32c775594e6ad4688e5d9aa60e6237"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -113,15 +113,6 @@
             "index": "pypi",
             "version": "==3.12.4"
         },
-        "fpdf": {
-            "hashes": [
-                "sha256:0a94eb783ee933e32a44ad949a1aa6c3ca6fb35b608db53f8b216aec52fc1fb5",
-                "sha256:125840783289e7d12552b1e86ab692c37322e7a65b96a99e0ea86cca041b6779",
-                "sha256:9542f6ad0791d673955da954a0cf3554a0affac79deab87bee06b9b4d4e60990"
-            ],
-            "index": "pypi",
-            "version": "==1.7.2"
-        },
         "idna": {
             "hashes": [
                 "sha256:84d9dd047ffa80596e0f246e2eab0b391788b0503584e8945f2368256d2735ff",
@@ -129,6 +120,15 @@
             ],
             "markers": "python_version >= '3'",
             "version": "==3.3"
+        },
+        "pdfkit": {
+            "hashes": [
+                "sha256:992f821e1e18fc8a0e701ecae24b51a2d598296a180caee0a24c0af181da02a9",
+                "sha256:a7a4ca0d978e44fa8310c4909f087052430a6e8e0b1dd7ceef657f139789f96f",
+                "sha256:cc122e5aed594198ff7aaa566f2950d2163763576ab891c161bb1f6c630f5a8e"
+            ],
+            "index": "pypi",
+            "version": "==1.0.0"
         },
         "pytz": {
             "hashes": [

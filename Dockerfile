@@ -2,6 +2,7 @@
 
 # The first instruction is what image we want to base our container on
 # We Use an official Python runtime as a parent image
+FROM surnet/alpine-wkhtmltopdf:3.13.5-0.12.6-small
 FROM python:3.9-alpine
 ENV PYTHONUNBUFFERED 1
 
@@ -18,6 +19,23 @@ ARG FRONTEND_URL "localhost:3000"
 # obviously insecure, you should pass in a better password via environment variable
 ARG DJANGO_SUPERUSER_PASSWORD=admin
 ARG SUPERUSER_EMAIL=admin@example.com
+
+# For wkhtmltopdf
+RUN apk add --no-cache \
+ libstdc++ \
+ libx11 \
+ libxrender \
+ libxext \
+ ca-certificates \
+ fontconfig \
+ freetype \
+ ttf-dejavu \
+ ttf-droid \
+ ttf-freefont \
+ ttf-liberation
+
+# Copy patched wkhtmltopdf to current image
+COPY --from=0 /bin/wkhtmltopdf /bin/wkhtmltopdf
 
 RUN pip install pipenv
 

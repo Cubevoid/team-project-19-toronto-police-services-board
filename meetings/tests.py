@@ -18,4 +18,5 @@ class PDFGenerationTestCase(TestCase):
     item2 = AgendaItem(agenda=agenda, number=2, title='Really Long Title ' * 8, description='Test Description 2')
 
     def test_basic_pdf(self):
-        create_pdf.generate_agenda(self.agenda, [self.item1, self.item11, self.item2])
+        template = 'meetings/templates/agenda.html'
+        create_pdf.generate_agenda(template, self.agenda, [self.item1, self.item11, self.item2])

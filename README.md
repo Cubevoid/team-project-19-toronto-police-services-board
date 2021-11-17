@@ -42,6 +42,7 @@ There are two ways to run the backend locally:
 ### Option 1: Manual setup
 
 - To set up the Python backend’s dependencies, we are using Pipenv (install using `pip install pipenv` or `pip3 install pipenv`). To install the dependencies, navigate to the project directory and run `pipenv install`. Note that the dependencies are listed in the `Pipfile` and their versions in the `Pipfile.lock`.
+- For PDF generation, you will also need [wkhtmltopdf](https://wkhtmltopdf.org/downloads.html) installed on your system.
 - To activate the virtual environment, run `pipenv shell`.
 - Set up the database using `python manage.py makemigrations` and `python manage.py migrate`.
 - Create a new user with `python manage.py createsuperuser` which will prompt you for credentials.
