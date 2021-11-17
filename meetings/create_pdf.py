@@ -1,5 +1,5 @@
 from os import path
-from fpdf import FPDF
+from fpdf import FPDF, HTMLMixin
 from typing import List
 from meetings.models import *
 from pytz import timezone
@@ -11,7 +11,6 @@ LETTER_WIDTH_MM = 8.5 * 25.4
 INDENT_AMOUNT = 8
 LINE_SPACING = 8
 FONT_FAMILY = 'Arial'
-
 
 def generate_agenda(agenda: Agenda, agenda_items: List[AgendaItem]):
     pdf = PDF(format='Letter', unit='mm')
@@ -29,7 +28,7 @@ def generate_agenda(agenda: Agenda, agenda_items: List[AgendaItem]):
     pdf.output('test.pdf', 'F')
 
 
-class PDF(FPDF):
+class PDF(FPDF, HTMLMixin):
 
     def set_agenda(self, agenda: Agenda):
         self.title = str(agenda)

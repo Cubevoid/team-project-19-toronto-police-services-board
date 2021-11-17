@@ -47,3 +47,4 @@ class MinutesAdmin(admin.ModelAdmin):
 admin.site.register(Meeting, MeetingAdmin)
 admin.site.register(Minutes, MinutesAdmin)
 admin.site.register(Agenda, AgendaAdmin)
+admin.site.register(AgendaTemplate)

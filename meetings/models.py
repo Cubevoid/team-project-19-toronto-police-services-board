@@ -85,3 +85,10 @@ class Minutes(models.Model):
 
     class Meta:
         verbose_name_plural = "Minutes"
+
+
+class AgendaTemplate(models.Model):
+    template = RichTextField()
+
+    def __str__(self) -> str:
+        return 'Agenda Template'
