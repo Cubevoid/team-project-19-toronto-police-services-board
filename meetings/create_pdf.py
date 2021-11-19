@@ -59,7 +59,15 @@ def generate_agenda(template: AgendaTemplate,
     contents_html += '</ol><p style="page-break-after:always;"><!-- pagebreak --></p>'
 
     html = title_page_html + toc_header_html + contents_html
-    wk_options = {"enable-local-file-access": None}
+    wk_options = {
+        "enable-local-file-access": None,
+        'page-size': 'Letter',
+        'margin-top': '0.75in',
+        'margin-right': '0.75in',
+        'margin-bottom': '0.75in',
+        'margin-left': '0.75in',
+        'encoding': "UTF-8",
+    }
     pdfkit.from_string(html, output_path=output_path, options=wk_options, css='meetings/agenda.css')
 
     pass

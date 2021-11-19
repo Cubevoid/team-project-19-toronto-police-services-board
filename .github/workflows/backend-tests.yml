@@ -31,11 +31,14 @@ jobs:
           path: ~/.local/share/virtualenvs
           key: ${{ runner.os }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
 
-      # Installs non-Qt-patched wkhtmltopdf (doesn't support all features)
       - name: Install dependencies
         if: steps.cache-pipenv.outputs.cache-hit != 'true'
         run: |
           pipenv install --deploy --dev
+
+      # Installs non-Qt-patched wkhtmltopdf (doesn't support all features but should complete tests)
+      - name: Install wkhtmltopdf
+        run: |
           sudo apt-get install wkhtmltopdf -y
 
       - name: Run test suite
