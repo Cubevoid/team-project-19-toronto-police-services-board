@@ -72,3 +72,9 @@ class Minutes(models.Model):
 
     class Meta:
         verbose_name_plural = "Minutes"
+
+
+class AgendaTemplate(models.Model):
+    title_page = RichTextField()
+    toc = RichTextField()
+    contents_item = RichTextField()
