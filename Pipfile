@@ -12,6 +12,7 @@ django-ckeditor = "*"
 django-environ = "*"
 django-admin-interface = "*"
 pdfkit = "*"
+django-singleton-model = "*"
 
 [dev-packages]
 

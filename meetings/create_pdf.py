@@ -31,7 +31,7 @@ def generate_agenda(template: AgendaTemplate,
     os.makedirs(os.path.join(BASE_DIR, 'uploads'), exist_ok=True)
 
     title_page_template = preprocess_html(template.title_page)
-    toc_template = preprocess_html(template.toc)
+    toc_template = preprocess_html(template.contents_header)
     contents_template = re.sub('</?ol>', '', preprocess_html(template.contents_item))  # remove <ol> tags between list items
 
     agenda_context = Context({

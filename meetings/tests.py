@@ -3,6 +3,7 @@ from meetings import create_pdf
 from meetings.models import *
 from datetime import datetime
 
+# Temporary: should be in database using fixture
 title_template = """
 <br />
 <br />
@@ -40,8 +41,13 @@ class PDFGenerationTestCase(TestCase):
                       description='Test Description',
                       meeting_type='PUB',
                       recording_link='https://youtube.com/')
+
     agenda = Agenda(meeting=meeting)
-    agenda_template = AgendaTemplate(title_page=title_template, toc=toc_template, contents_item=content_template)
+    
+    agenda_template = AgendaTemplate(title_page=title_template,
+                                     contents_header=toc_template,
+                                     contents_item=content_template)
+
     item1 = AgendaItem(agenda=agenda, number=1, title='Agenda Item 1', description='Test Description 1')
     item11 = AgendaItem(agenda=agenda, number=1.1, title='Agenda Item 1.1', description='Test 1.1')
     item2 = AgendaItem(agenda=agenda, number=2, title='Really Long Title ' * 8, description='Test Description 2')

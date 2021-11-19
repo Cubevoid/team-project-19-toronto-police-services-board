@@ -1,7 +1,9 @@
 from datetime import datetime
 from django.db import models
+from singleton_model import SingletonModel
 import os
 from pytz import timezone
+import singleton_model
 import tpsb.settings as settings
 from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
@@ -74,7 +76,13 @@ class Minutes(models.Model):
         verbose_name_plural = "Minutes"
 
 
-class AgendaTemplate(models.Model):
-    title_page = RichTextField()
-    toc = RichTextField()
-    contents_item = RichTextField()
+class AgendaTemplate(SingletonModel):
+    title_page = RichTextUploadingField()
+    contents_header = RichTextUploadingField()
+    contents_item = RichTextUploadingField()
+
+    def __str__(self) -> str:
+        return "Agenda Template"
+    
+    class Meta:
+        verbose_name_plural = "Agenda Template"
