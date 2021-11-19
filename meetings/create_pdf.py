@@ -6,13 +6,11 @@ import pdfkit
 from django.template import Template, Context
 import re, os
 
-AUTHOR = 'Toronto Police Services Board'
-
 
 def generate_agenda(template: AgendaTemplate,
                     agenda: Agenda,
                     agenda_items: List[AgendaItem],
-                    output_path: str = 'test.pdf'):
+                    output_path: str = os.path.join(BASE_DIR, "uploads/untitled_agenda.pdf")):
     """
     Generate an agenda PDF.
 
@@ -20,45 +18,6 @@ def generate_agenda(template: AgendaTemplate,
     :param agenda: Agenda model
     :param agenda_items: AgendaItem models
     """
-
-    tz = timezone(TIME_ZONE)
-    time = agenda.meeting.date.astimezone(tz)
-    time_formatted = time.strftime("%A %B %d, %Y at %I:%M %p")
-
-    title_page_template = preprocess_html(template.title_page)
-    toc_template = preprocess_html(template.toc)
-    contents_template = preprocess_html(template.contents_item)
-    contents_template = re.sub('</?ol>', '', contents_template)  # remove <ol> tags between list items
-
-    agenda_context = Context({
-        "title": str(agenda),
-        "date": time_formatted,
-        "recording_link": agenda.meeting.recording_link,
-        "description": agenda.meeting.description
-    })
-
-    title_page_html = Template(title_page_template).render(agenda_context)
-    toc_header_html = Template(toc_template).render(agenda_context)
-
-    contents_html = "<ol>"
-    contents_template = Template(contents_template)
-    in_subsection = False
-
-    for item in agenda_items:
-        # Indent and unindent sub-items correctly
-        if item.number % 1 != 0 and not in_subsection:
-            in_subsection = True
-            contents_html += "<ol>"
-        elif item.number % 1 == 0 and in_subsection:
-            in_subsection = False
-            contents_html += "</ol>"
-
-        item_context = Context({"number": item.number, "title": item.title, "description": item.description})
-        contents_html += contents_template.render(item_context) + "\n"
-
-    contents_html += '</ol><p style="page-break-after:always;"><!-- pagebreak --></p>'
-
-    html = title_page_html + toc_header_html + contents_html
     wk_options = {
         "enable-local-file-access": None,
         'page-size': 'Letter',
@@ -68,9 +27,27 @@ def generate_agenda(template: AgendaTemplate,
         'margin-left': '0.75in',
         'encoding': "UTF-8",
     }
-    pdfkit.from_string(html, output_path=output_path, options=wk_options, css='meetings/agenda.css')
 
-    pass
+    os.makedirs(os.path.join(BASE_DIR, 'uploads'), exist_ok=True)
+
+    title_page_template = preprocess_html(template.title_page)
+    toc_template = preprocess_html(template.toc)
+    contents_template = re.sub('</?ol>', '', preprocess_html(template.contents_item))  # remove <ol> tags between list items
+
+    agenda_context = Context({
+        "title": str(agenda),
+        "date": agenda.meeting.date.astimezone(timezone(TIME_ZONE)).strftime("%A %B %d, %Y at %I:%M %p"),
+        "recording_link": agenda.meeting.recording_link,
+        "description": agenda.meeting.description
+    })
+
+    title_page_html = Template(title_page_template).render(agenda_context)
+    toc_header_html = Template(toc_template).render(agenda_context)
+    contents_html = generate_table_of_contents(Template(contents_template), agenda_items)
+
+    agenda_html = title_page_html + toc_header_html + contents_html
+
+    pdfkit.from_string(agenda_html, output_path=output_path, options=wk_options, css='meetings/agenda.css')
 
 
 # https://stackoverflow.com/a/39327252/13176711
@@ -89,3 +66,29 @@ def preprocess_html(template: str) -> str:
     template = template.replace('<p><!-- pagebreak --></p>',
                                 '<p style="page-break-after:always;"><!-- pagebreak --></p>')
     return template
+
+
+def generate_table_of_contents(template: str, agenda_items: List[AgendaItem]):
+    """
+    Generates the table of contents list, including sub-items.
+    Prerequisites: template is an HTML ordered list.
+    """
+    contents_html = "<ol>"
+
+    in_subsection = False
+
+    for item in agenda_items:
+        # Indent and unindent sub-items correctly
+        if item.number % 1 != 0 and not in_subsection:
+            in_subsection = True
+            contents_html += "<ol>"
+        elif item.number % 1 == 0 and in_subsection:
+            in_subsection = False
+            contents_html += "</ol>"
+
+        item_context = Context({"number": item.number, "title": item.title, "description": item.description})
+        contents_html += template.render(item_context) + "\n"
+
+    contents_html += '</ol><p style="page-break-after:always;"><!-- pagebreak --></p>'
+
+    return contents_html
