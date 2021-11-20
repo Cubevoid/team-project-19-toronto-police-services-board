@@ -4,7 +4,7 @@ from pytz import timezone
 from tpsb.settings import TIME_ZONE, BASE_DIR
 import pdfkit
 from django.template import Template, Context
-import re, os
+import re, os, sys
 
 
 def generate_agenda(template: AgendaTemplate,
@@ -52,6 +52,9 @@ def generate_agenda(template: AgendaTemplate,
 
     pdfkit.from_string(agenda_html, output_path=output_path, options=wk_options, css='meetings/agenda.css')
 
+    output_dir = get_parent_dir(output_path)
+    pdfs = convert_attachments_to_pdf(agenda_items, output_dir)
+
 
 # https://stackoverflow.com/a/39327252/13176711
 def newest_file(path):
@@ -94,12 +97,65 @@ def generate_table_of_contents(template: str, agenda_items: List[AgendaItem]):
         item_context = Context({"number": item.number, "title": item.title, "description": item.description})
         contents_html += template.render(item_context) + "\n"
 
-    contents_html += '</ol><p style="page-break-after:always;"><!-- pagebreak --></p>'
+    contents_html += '</ol>'
+    # contents_html += '<p style="page-break-after:always;"><!-- pagebreak --></p>'
 
     return contents_html
 
 
 # https://stackoverflow.com/a/2556252/13176711
 def rreplace(s, old, new):
+    """Replace last occurence of old in s with new."""
     li = s.rsplit(old, 1)
     return new.join(li)
+
+
+def find_libreoffice() -> str:
+    """Returns the command on the system to run LibreOffice."""
+    # Try system version (apt)
+    if os.system("libreoffice --version 2> /dev/null") == 0:
+        return "libreoffice"
+    # Try flatpak version
+    elif os.system("flatpak run org.libreoffice.LibreOffice --version 2> /dev/null") == 0:
+        return "flatpak run org.libreoffice.LibreOffice"
+    # Try snap version
+    elif os.system("/snap/bin/libreoffice --version 2> /dev/null") == 0:
+        return "/snap/bin/libreoffice"
+    else:
+        return ""
+
+
+def strip_filename(path: str) -> str:
+    """Returns the filename without the extension or path"""
+    filename = os.path.basename(path)
+    dot = filename.rindex(".")
+    filename = filename[:dot]
+    return filename
+
+
+def get_parent_dir(path: str) -> str:
+    """Returns the absolute path of the parent directory"""
+    return os.path.abspath(os.path.join(path, os.pardir))
+
+
+def convert_attachments_to_pdf(agenda_items: List[AgendaItem], output_dir: str):
+    """
+    Converts and saves AgendaItem attachments to PDF format.
+    Returns a dict where the keys are the AgendaItem id and the value the file path of the pdf.
+    """
+    libreoffice_cmd = find_libreoffice()
+    if libreoffice_cmd == "":
+        print(f"Libreoffice was not found on your system.", file=sys.stderr)
+        exit(1)
+
+    pdfs = {}
+    for agenda_item in agenda_items:
+        if agenda_item.file:
+            input_doc = os.path.abspath(agenda_item.file.name)
+
+            assert os.system(
+                f'{libreoffice_cmd} --convert-to pdf "{input_doc}" --outdir "{output_dir}" 2> /dev/null') == 0
+            pdf = f"{output_dir}/{strip_filename(input_doc)}.pdf"
+            pdfs[agenda_item.id] = pdf
+    
+    return pdfs

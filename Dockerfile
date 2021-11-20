@@ -20,7 +20,7 @@ ARG FRONTEND_URL "localhost:3000"
 ARG DJANGO_SUPERUSER_PASSWORD=admin
 ARG SUPERUSER_EMAIL=admin@example.com
 
-# For wkhtmltopdf
+# For wkhtmltopdf, and install libreoffice
 RUN apk add --no-cache \
  libstdc++ \
  libx11 \
@@ -32,7 +32,8 @@ RUN apk add --no-cache \
  ttf-dejavu \
  ttf-droid \
  ttf-freefont \
- ttf-liberation
+ ttf-liberation \
+ libreoffice
 
 # Copy patched wkhtmltopdf to current image
 COPY --from=0 /bin/wkhtmltopdf /bin/wkhtmltopdf
@@ -52,4 +53,4 @@ ENV BACKEND_URL ${BACKEND_URL}
 ENV FRONTEND_URL ${FRONTEND_URL}
 
 # runs the development server
-CMD python manage.py runserver 0.0.0.0:$PORT
+CMD python manage.py test
