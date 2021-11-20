@@ -31,7 +31,7 @@ content_template = """
 """
 
 
-# Create your tests here.
+# Exclude this test from running in GH Actions
 class PDFGenerationTestCase(TestCase):
 
     meeting = Meeting(title='TPSB Nov Test Meeting',
@@ -47,12 +47,17 @@ class PDFGenerationTestCase(TestCase):
                                      contents_item=content_template)
 
     agenda_items = [
-        AgendaItem(agenda=agenda, number=1, title='Agenda Item 1', description='Test Description 1'),
+        AgendaItem(agenda=agenda, number=1, title='Agenda Item 1', description='Test Description 1', file="uploads/TPSB Board Meeting Management System specs doc.docx"),
         AgendaItem(agenda=agenda, number=1.1, title='Agenda Item 1.1', description='Test 1.1'),
         AgendaItem(agenda=agenda, number=2.2, title='Agenda Item 2.2', description=''),
         AgendaItem(agenda=agenda, number=2.1, title='Agenda Item 2.1', description='Test Description 2'),
         AgendaItem(agenda=agenda, number=2, title='Really Long Title ' * 8, description='Test Description 2'),
     ]
 
-    def test_basic_pdf(self):
+    # To run this case use python manage.py test meetings.tests.PDFGenerationTestCase.agenda_pdf_generation
+    def agenda_pdf_generation(self):
+        self.meeting.save()
+        self.agenda.save()
+        for agenda_item in self.agenda_items:
+            agenda_item.save() 
         create_pdf.generate_agenda(self.agenda_template, self.agenda, self.agenda_items)

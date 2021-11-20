@@ -36,11 +36,6 @@ jobs:
         run: |
           pipenv install --deploy --dev
 
-      # Installs non-Qt-patched wkhtmltopdf (doesn't support all features but should complete tests)
-      - name: Install wkhtmltopdf
-        run: |
-          sudo apt-get install wkhtmltopdf -y
-
       - name: Run test suite
         run: |
           pipenv run migrations
