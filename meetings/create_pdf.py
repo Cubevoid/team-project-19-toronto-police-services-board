@@ -3,6 +3,7 @@ from meetings.models import *
 from pytz import timezone
 from tpsb.settings import TIME_ZONE, BASE_DIR
 import pdfkit
+from PyPDF2 import PdfFileMerger
 from django.template import Template, Context
 import re, os, sys
 
@@ -19,7 +20,8 @@ def generate_agenda(template: AgendaTemplate,
     :param agenda_items: AgendaItem models
     """
     wk_options = {
-        "enable-local-file-access": None,
+        'enable-local-file-access': None,
+        'enable-internal-links': None,
         'page-size': 'Letter',
         'margin-top': '0.75in',
         'margin-right': '0.75in',
@@ -50,10 +52,23 @@ def generate_agenda(template: AgendaTemplate,
 
     agenda_html = title_page_html + toc_header_html + contents_html
 
-    pdfkit.from_string(agenda_html, output_path=output_path, options=wk_options, css='meetings/agenda.css')
-
     output_dir = get_parent_dir(output_path)
+
+    temp_path = os.path.join(output_dir, 'toc.pdf')
+    pdfkit.from_string(agenda_html, output_path=temp_path, options=wk_options, css='meetings/agenda.css')
+
     pdfs = convert_attachments_to_pdf(agenda_items, output_dir)
+
+    merger = PdfFileMerger()
+    merger.append(temp_path, import_bookmarks=False)
+    for agenda_item in agenda_items:
+        if agenda_item.id in pdfs:
+            merger.append(pdfs[agenda_item.id]) 
+    
+    merger.write(output_path)
+    merger.close()
+
+    os.remove(temp_path)
 
 
 # https://stackoverflow.com/a/39327252/13176711
