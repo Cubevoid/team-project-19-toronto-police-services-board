@@ -15,10 +15,12 @@ table {
 /* https://stackoverflow.com/a/30326819/13176711 */
 ol {
     counter-reset: item;
+    margin-top: 1em;
 }
 
 ol > li {
     counter-increment: item;
+    margin-top: 1em;
 }
 
 ol ol > li {

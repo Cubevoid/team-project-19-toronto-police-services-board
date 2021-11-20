@@ -27,9 +27,7 @@ toc_template = """
 """
 
 content_template = """
-<ol>
-<li value="{{ number }}. ">{{ title }}<br />{{ description }}</li> <br />
-</ol>
+<ol><li value="{{ number }}. ">{{ title }}<br />{{ description }}</li></ol>
 """
 
 
@@ -43,14 +41,18 @@ class PDFGenerationTestCase(TestCase):
                       recording_link='https://youtube.com/')
 
     agenda = Agenda(meeting=meeting)
-    
+
     agenda_template = AgendaTemplate(title_page=title_template,
                                      contents_header=toc_template,
                                      contents_item=content_template)
 
-    item1 = AgendaItem(agenda=agenda, number=1, title='Agenda Item 1', description='Test Description 1')
-    item11 = AgendaItem(agenda=agenda, number=1.1, title='Agenda Item 1.1', description='Test 1.1')
-    item2 = AgendaItem(agenda=agenda, number=2, title='Really Long Title ' * 8, description='Test Description 2')
+    agenda_items = [
+        AgendaItem(agenda=agenda, number=1, title='Agenda Item 1', description='Test Description 1'),
+        AgendaItem(agenda=agenda, number=1.1, title='Agenda Item 1.1', description='Test 1.1'),
+        AgendaItem(agenda=agenda, number=2.2, title='Agenda Item 2.2', description=''),
+        AgendaItem(agenda=agenda, number=2.1, title='Agenda Item 2.1', description='Test Description 2'),
+        AgendaItem(agenda=agenda, number=2, title='Really Long Title ' * 8, description='Test Description 2'),
+    ]
 
     def test_basic_pdf(self):
-        create_pdf.generate_agenda(self.agenda_template, self.agenda, [self.item1, self.item11, self.item2])
+        create_pdf.generate_agenda(self.agenda_template, self.agenda, self.agenda_items)

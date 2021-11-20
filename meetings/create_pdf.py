@@ -30,9 +30,12 @@ def generate_agenda(template: AgendaTemplate,
 
     os.makedirs(os.path.join(BASE_DIR, 'uploads'), exist_ok=True)
 
+    agenda_items.sort(key=lambda x: x.number)
+
     title_page_template = preprocess_html(template.title_page)
     toc_template = preprocess_html(template.contents_header)
-    contents_template = re.sub('</?ol>', '', preprocess_html(template.contents_item))  # remove <ol> tags between list items
+    contents_template = re.sub('</?ol>', '',
+                               preprocess_html(template.contents_item))  # remove <ol> tags between list items
 
     agenda_context = Context({
         "title": str(agenda),
@@ -81,10 +84,12 @@ def generate_table_of_contents(template: str, agenda_items: List[AgendaItem]):
         # Indent and unindent sub-items correctly
         if item.number % 1 != 0 and not in_subsection:
             in_subsection = True
+            contents_html = rreplace(contents_html, '</li>', '')
             contents_html += "<ol>"
         elif item.number % 1 == 0 and in_subsection:
             in_subsection = False
             contents_html += "</ol>"
+            contents_html += "</li>"
 
         item_context = Context({"number": item.number, "title": item.title, "description": item.description})
         contents_html += template.render(item_context) + "\n"
@@ -92,3 +97,9 @@ def generate_table_of_contents(template: str, agenda_items: List[AgendaItem]):
     contents_html += '</ol><p style="page-break-after:always;"><!-- pagebreak --></p>'
 
     return contents_html
+
+
+# https://stackoverflow.com/a/2556252/13176711
+def rreplace(s, old, new):
+    li = s.rsplit(old, 1)
+    return new.join(li)

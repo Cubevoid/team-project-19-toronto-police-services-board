@@ -53,7 +53,7 @@ class AgendaItem(models.Model):
     file = models.FileField('Attachment', upload_to="uploads", blank=True)  # temporary
 
     def __str__(self) -> str:
-        return f'[{self.result}] {self.title}'
+        return f'[{self.result}] {self.number}. {self.title}'
 
 
 class Attachment(models.Model):
