@@ -20,23 +20,19 @@ ARG DJANGO_SUPERUSER_PASSWORD=admin
 ARG SUPERUSER_EMAIL=admin@example.com
 
 # For wkhtmltopdf, and install libreoffice
-RUN apt update --assume-no
-RUN apt-get install libreoffice-nogui wget -y --no-install-recommends
-
-RUN wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.buster_amd64.deb
-RUN apt-get install ./wkhtmltox_0.12.6-1.buster_amd64.deb -y
-RUN rm wkhtmltox_0.12.6-1.buster_amd64.deb
-
-RUN pip install pipenv
+RUN apt update --assume-no && apt-get install libreoffice-writer-nogui libreoffice-impress-nogui libreoffice-draw-nogui wget -y --no-install-recommends \
+    && wget -q https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.buster_amd64.deb \
+    && apt-get install ./wkhtmltox_0.12.6-1.buster_amd64.deb --no-install-recommends -y \
+    && rm wkhtmltox_0.12.6-1.buster_amd64.deb \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt purge wget -y \
+    && pip install pipenv
 
 WORKDIR /src
 COPY . ./
 RUN pipenv install --system --deploy
 
-RUN python manage.py makemigrations
-RUN python manage.py migrate
-RUN python manage.py createsuperuser --username admin --email $SUPERUSER_EMAIL --noinput
-RUN python manage.py loaddata meetings/fixtures/*.json
+RUN ./reset.sh
 
 ENV BACKEND_URL ${BACKEND_URL}
 ENV FRONTEND_URL ${FRONTEND_URL}
