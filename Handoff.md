@@ -18,15 +18,15 @@ You can use either build and deploy the Docker image manually or a CI/CD service
 
 To build the Docker image, first make sure you have [Docker](https://docs.docker.com/engine/install/) and Git installed on the server you are deploying to.
 
-Next, clone this Git repository and build the Docker image using
+Next, clone this Git repository and navigate to it in the terminal. Build the Docker image using
 
 ```[sh]
-docker build -t backend --build-arg FRONTEND_URL={frontend URL} --build-arg BACKEND_URL={backend URL}.
+docker build -t backend:latest --build-arg FRONTEND_URL={frontend URL} --build-arg BACKEND_URL={backend URL} .
 ```
 
 Make sure to replace `{frontend URL}` and `{backend URL}` with the correct values for deployment.
 
-You can also add `--build-arg SUPERUSER_EMAIL={email}` and `--build-arg DJANGO_SUPERUSER_PASSWORD={password}` to change the initial admin credentials. (By default they are `admin@example.com` and `admin`)
+You can also add `--build-arg SUPERUSER_EMAIL={email}` and `--build-arg DJANGO_SUPERUSER_PASSWORD={password}` to change the initial admin credentials. (By default they are `admin@example.com` and `admin`) Otherwise you can change them after deployment.
 
 (Note: you may need to use `sudo` in front of `docker` commands on some Linux systems.)
 
@@ -44,7 +44,7 @@ Now we can deploy these files to our hosting provider.
 
 For Firebase, follow [these instructions](https://firebase.google.com/docs/hosting/quickstart) to set up Firebase and deploy your project.
 
-You will probably need to remove the current `.firebaserc` and `firebase.json` files so that the Firebase CLI does not get confused.
+You will probably need to remove the current `.firebaserc` and `firebase.json` files first so that the Firebase CLI does not get confused.
 
 ### Running the Project
 
@@ -60,6 +60,32 @@ If you deployed to a service like Firebase in the previous step, then the fronte
 
 ## Automated Deployment
 
+### Introduction
+
 We used GitHub Actions for our CI/CD, but there are other tools such as Travis or CircleCI that will work similarly.
 
 The GitHub Actions scripts are set up in the `.github/workflows/` directory, and you should reference them throughout this guide.
+
+This guide will walk you through how to set up automated deployment using Google Cloud Run for the backend and Firebase Hosting for the frontend.
+
+### Backend
+
+First you will need to set up a project in Google Cloud.
+
+Next, follow [these instructions](https://github.com/marketplace/actions/deploy-to-cloud-run) to configure the Service Account needed to run the workflow. You'll need to add the JSON Service Account key to the Repository Secrets in GitHub (in `deploy_backend.yml`, this is referenced as `GCP_SA_KEY`). You should also add the project name as `GCP_PROJECT`.
+
+You may need to modify some parts of `deploy_backend.yml` depending on your Google Cloud configuration. For example, `SERVICE` (the image name), `REGION`, and `build_extra_args` in the "Build and Push Container" step might change depending on how/where you wish to deploy the app.
+
+### Frontend
+
+Make sure you have created a Firebase project at [https://firebase.google.com/](https://firebase.google.com/).
+
+The `deploy_frontend.yml` workflow file can be mostly generated automatically using the Firebase CLI: simply run `firebase init hosting` and the tool will walk you through setting up GitHub Actions to automatically deploy the frontend.
+
+At the end, you will get a new `.yml` file which you can use as a template (along with the current `deploy-frontend.yml`).
+
+## Automated Testing
+
+We also use GitHub Actions to run automated unit tests on the Django app (see `backend-tests.yml`).
+
+The Python dependencies are cached between runs to avoid reinstalling the same libraries every time, so the workflow runs are fairly time-efficient (running in less than a minute).
