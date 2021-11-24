@@ -62,6 +62,10 @@ For the frontend, you will need `npm`.
 - You can run the frontend using `npm start`.
 - To produce a minified build for deployment, use `npm run build`.
 
+## Handoff
+
+See [Handoff.md](Handoff.md) for handoff instructions.
+
 ## Deployment and Github Workflow
 
 We use a Git feature workflow with a `develop` branch. Thus, the `master` branch represents the code that has been deployed to the demo server, the `develop` branch represents ongoing work on the project, and other feature branches are created from `develop`. A pull request will start from a feature branch and is reviewed by at least one other group member before being merged into `develop`. Once the group is satisfied with the state of a project, we create a pull request and at least three members review it before it goes into `master`.
