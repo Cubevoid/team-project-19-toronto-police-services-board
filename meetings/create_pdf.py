@@ -1,11 +1,14 @@
-from typing import List
+from typing import List, Iterable, Any
+
+from PyPDF3 import PdfFileMerger, PdfFileReader, PdfFileWriter
+from PyPDF3.generic import Destination
 from meetings.models import *
 from pytz import timezone
 from tpsb.settings import TIME_ZONE, BASE_DIR
 import pdfkit
-from PyPDF2 import PdfFileMerger
 from django.template import Template, Context
 import re, os, sys
+from pdfminer.high_level import extract_pages
 
 
 def generate_agenda(template: AgendaTemplate,
@@ -34,6 +37,9 @@ def generate_agenda(template: AgendaTemplate,
 
     agenda_items.sort(key=lambda x: x.number)
 
+    output_dir = get_parent_dir(output_path)
+    pdfs = convert_attachments_to_pdf(agenda_items, output_dir)
+
     title_page_template = preprocess_html(template.title_page)
     toc_template = preprocess_html(template.contents_header)
     contents_template = re.sub('</?ol>', '',
@@ -52,23 +58,66 @@ def generate_agenda(template: AgendaTemplate,
 
     agenda_html = title_page_html + toc_header_html + contents_html
 
-    output_dir = get_parent_dir(output_path)
-
     temp_path = os.path.join(output_dir, 'toc.pdf')
     pdfkit.from_string(agenda_html, output_path=temp_path, options=wk_options, css='meetings/agenda.css')
 
-    pdfs = convert_attachments_to_pdf(agenda_items, output_dir)
-
+    page_nums = {}
     merger = PdfFileMerger()
-    merger.append(temp_path, import_bookmarks=False)
+    merger.append(temp_path, import_bookmarks=False, bookmark="Table of Contents")
     for agenda_item in agenda_items:
         if agenda_item.id in pdfs:
-            merger.append(pdfs[agenda_item.id]) 
-    
+            page_nums[agenda_item.id] = len(merger.pages)
+            merger.append(pdfs[agenda_item.id], bookmark=os.path.basename(pdfs[agenda_item.id]))
+
     merger.write(output_path)
     merger.close()
 
+    add_links(temp_path, output_path, agenda_items, pdfs, page_nums)
+
     os.remove(temp_path)
+
+
+def add_links(toc_path, output_path, agenda_items, pdfs, page_nums):
+    """Adds links to the attachment names in the output_path PDF, with pages specified by page_nums."""
+    toc_data = extract_pages(toc_path)
+    bboxes = get_text_lines(toc_data)
+
+    reader = PdfFileReader(output_path)
+    writer = PdfFileWriter()
+
+    # should be writer.cloneDocumentFromReader(reader) but this bug exists https://github.com/mstamy2/PyPDF2/issues/219
+    # thus PDF bookmarks aren't preserved
+    writer.appendPagesFromReader(reader)
+
+    for agenda_item in agenda_items:
+        if agenda_item.id in pdfs:
+            page_num = page_nums[agenda_item.id]
+            writer.addLink(
+                PdfFileReader(toc_path).getNumPages() - 1, page_num, bboxes[os.path.basename(agenda_item.file.name)])
+
+    bookmarks = reader.getOutlines()
+
+    add_bookmarks(writer, bookmarks)
+
+    with open(output_path, 'wb') as toc:
+        writer.write(toc)
+
+
+def add_bookmarks(writer: PdfFileWriter, bookmarks: List[Destination], parent=None):
+    """Recursive function which adds bookmarks to the document based on the nested list, bookmarks."""
+    prev = None
+    for i in range(len(bookmarks)):
+        if isinstance(bookmarks[i], list):
+            add_bookmarks(writer, bookmarks[i], prev)
+        else:
+            fit = bookmarks[i]['/Type']
+            args = []
+            for arg in ["/Left", "/Bottom", "/Right", "/Top", "/Zoom"]:
+                if arg in bookmarks[i]:
+                    args.append(bookmarks[i][arg])
+
+            prev = writer.addBookmark(bookmarks[i]['/Title'], bookmarks[i]['/Page'], parent, None, False, False, fit,
+                                      *args)
 
 
 # https://stackoverflow.com/a/39327252/13176711
@@ -109,8 +158,17 @@ def generate_table_of_contents(template: str, agenda_items: List[AgendaItem]):
             contents_html += "</ol>"
             contents_html += "</li>"
 
-        item_context = Context({"number": item.number, "title": item.title, "description": item.description})
-        contents_html += template.render(item_context) + "\n"
+        item_context = Context({
+            "number": item.number,
+            "title": item.title,
+            "description": item.description,
+            "attachment":
+                os.path.basename(item.file.name)  # TODO: replace with attachment titles
+        })
+        item_html = template.render(item_context)
+        if not item.file:
+            item_html = item_html[:item_html.rfind("<u>Attachments")]
+        contents_html += item_html
 
     contents_html += '</ol>'
     # contents_html += '<p style="page-break-after:always;"><!-- pagebreak --></p>'
@@ -172,5 +230,39 @@ def convert_attachments_to_pdf(agenda_items: List[AgendaItem], output_dir: str):
                 f'{libreoffice_cmd} --convert-to pdf "{input_doc}" --outdir "{output_dir}" 2> /dev/null') == 0
             pdf = f"{output_dir}/{strip_filename(input_doc)}.pdf"
             pdfs[agenda_item.id] = pdf
-    
+
     return pdfs
+
+
+# This function and related ones are derived from https://stackoverflow.com/a/69151177/13176711
+def get_text_lines(o: Any, depth=0, lines={}):
+    """Get bounding boxes of text lines in the document."""
+    # key=text, value=bbox
+
+    if get_indented_name(o, depth) == 'LTTextLineHorizontal':
+        lines[get_optional_text(o)] = get_optional_bbox(o)
+
+    if isinstance(o, Iterable):
+        for i in o:
+            get_text_lines(i, depth=depth + 1, lines=lines)
+
+    return lines
+
+
+def get_indented_name(o: Any, depth: int) -> str:
+    """Indented name of LTItem"""
+    return o.__class__.__name__
+
+
+def get_optional_bbox(o: Any) -> str:
+    """Bounding box of LTItem if available, otherwise empty string"""
+    if hasattr(o, 'bbox'):
+        return o.bbox
+    return []
+
+
+def get_optional_text(o: Any) -> str:
+    """Text of LTItem if available, otherwise empty string"""
+    if hasattr(o, 'get_text'):
+        return o.get_text().strip()
+    return ''

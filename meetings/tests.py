@@ -27,7 +27,12 @@ toc_template = """
 """
 
 content_template = """
-<ol><li value="{{ number }}. ">{{ title }}<br />{{ description }}</li></ol>
+<ol>
+<li value="{{ number }}. ">{{ title }}<br />{{ description }}<br /><u>Attachments:</u></li>
+<ul>
+<li><a href="#{{ attachment_page }}">{{ attachment }}</a></li>
+</ul>
+</ol>
 """
 
 
@@ -51,7 +56,7 @@ class PDFGenerationTestCase(TestCase):
         AgendaItem(agenda=agenda, number=1.1, title='Agenda Item 1.1', description='Test 1.1'),
         AgendaItem(agenda=agenda, number=2.2, title='Agenda Item 2.2', description=''),
         AgendaItem(agenda=agenda, number=2.1, title='Agenda Item 2.1', description='Test Description 2'),
-        AgendaItem(agenda=agenda, number=2, title='Really Long Title ' * 8, description='Test Description 2'),
+        AgendaItem(agenda=agenda, number=2, title='Really Long Title ' * 8, description='Test Description 2', file="uploads/TPSB Board Meeting Management System specs doc.pdf"),
     ]
 
     # To run this case use python manage.py test meetings.tests.PDFGenerationTestCase.agenda_pdf_generation

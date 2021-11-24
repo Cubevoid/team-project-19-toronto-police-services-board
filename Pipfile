@@ -13,7 +13,8 @@ django-environ = "*"
 django-admin-interface = "*"
 pdfkit = "*"
 django-singleton-model = "*"
-pypdf2 = "*"
+"pdfminer.six" = "*"
+pypdf3 = "*"
 
 [dev-packages]
 
