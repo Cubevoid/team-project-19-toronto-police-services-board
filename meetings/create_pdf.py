@@ -171,8 +171,7 @@ def generate_table_of_contents(template: str, agenda_items: List[AgendaItem]):
         contents_html += item_html
 
     contents_html += '</ol>'
-    # contents_html += '<p style="page-break-after:always;"><!-- pagebreak --></p>'
-
+    
     return contents_html
 
 
