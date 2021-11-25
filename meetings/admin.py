@@ -11,7 +11,7 @@ class AgendaItemInline(admin.StackedInline):
 class AgendaAdmin(admin.ModelAdmin):
     inlines = [AgendaItemInline]
     list_display = ('meeting_title', 'meeting_date', 'meeting_type')
-    search_fields = ('meeting', )
+    search_fields = ('meeting',)
 
     def meeting_title(self, obj):
         return obj.meeting.title
@@ -26,12 +26,12 @@ class AgendaAdmin(admin.ModelAdmin):
 class MeetingAdmin(admin.ModelAdmin):
     list_display = ('title', 'date', 'meeting_type')
     list_filter = ('date', 'meeting_type')
-    search_fields = ('title', )
+    search_fields = ('title',)
 
 
 class MinutesAdmin(admin.ModelAdmin):
     list_display = ('meeting_title', 'meeting_date', 'meeting_type')
-    search_fields = ('meeting', )
+    search_fields = ('meeting',)
 
     def meeting_title(self, obj):
         return obj.meeting.title
@@ -47,3 +47,4 @@ class MinutesAdmin(admin.ModelAdmin):
 admin.site.register(Meeting, MeetingAdmin)
 admin.site.register(Minutes, MinutesAdmin)
 admin.site.register(Agenda, AgendaAdmin)
+admin.site.register(AgendaTemplate)

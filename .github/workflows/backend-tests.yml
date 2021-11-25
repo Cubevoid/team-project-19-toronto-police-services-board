@@ -38,4 +38,6 @@ jobs:
 
       - name: Run test suite
         run: |
+          pipenv run migrations
+          pipenv run migrate
           pipenv run tests
