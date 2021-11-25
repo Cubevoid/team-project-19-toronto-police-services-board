@@ -74,6 +74,8 @@ First you will need to set up a project in Google Cloud.
 
 Next, follow [these instructions](https://github.com/marketplace/actions/deploy-to-cloud-run) to configure the Service Account needed to run the workflow. You'll need to add the JSON Service Account key to the Repository Secrets in GitHub (in `deploy_backend.yml`, this is referenced as `GCP_SA_KEY`). You should also add the project name as `GCP_PROJECT`.
 
+This "Build and Push Container" step builds the Docker container on GitHub Actions and pushes it to Google Container Registry. Then, the "Deploy to Cloud Run" step simply tells Google Cloud Run to deploy the image from Container Registry.
+
 You may need to modify some parts of `deploy_backend.yml` depending on your Google Cloud configuration. For example, `SERVICE` (the image name), `REGION`, and `build_extra_args` in the "Build and Push Container" step might change depending on how/where you wish to deploy the app.
 
 ### Frontend
