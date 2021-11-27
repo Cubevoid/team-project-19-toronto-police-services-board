@@ -7,51 +7,51 @@ from meetings import views
 from rest_framework_extensions.routers import NestedRouterMixin
 
 router = routers.DefaultRouter()
-router.register(r'Minutes', views.MMView, 'Minutes')
-router.register(r'PrivateMeeting', views.PMView, 'PrivateMeeting')
-router.register(r'Meeting', views.MView, 'meeting')
-router.register(r'Agenda', views.AView, 'Agenda')
-router.register(r'AgendaItem', views.AIView, 'AgendaItem')
+router.register(r'Minutes', views.MinuteView, 'Minutes')
+router.register(r'PrivateMeeting', views.PrivateMeetingView, 'PrivateMeeting')
+router.register(r'Meeting', views.MeetingView, 'meeting')
+router.register(r'Agenda', views.AgendaView, 'Agenda')
+router.register(r'AgendaItem', views.AgendaItemView, 'AgendaItem')
 
 class NestedDefaultRouter(NestedRouterMixin, routers.DefaultRouter):
     pass
 
 router = NestedDefaultRouter()
 
-meeting_router = router.register(r'Meeting', views.MView, 'meeting')
+meeting_router = router.register(r'Meeting', views.MeetingView, 'meeting')
 meeting_router.register(
     r'Agenda',
-    views.AView,
+    views.AgendaView,
     basename='meeting-agenda',
     parents_query_lookups=['meeting']
 ).register(
     'AgendaItem',
-    views.AIView,
+    views.AgendaItemView,
     basename='meeting-agenda-agendaitem',
     parents_query_lookups=['agenda','agenda_id']
 )
 meeting_router.register(
     'Minutes',
-    views.MMView,
+    views.MinuteView,
     basename='meeting-minutes',
     parents_query_lookups=['meeting']
 )
 
-private_meeting_router = router.register(r'PrivateMeeting', views.PMView, 'PrivateMeeting')
+private_meeting_router = router.register(r'PrivateMeeting', views.PrivateMeetingView, 'PrivateMeeting')
 private_meeting_router.register(
     'Agenda',
-    views.AView,
+    views.AgendaView,
     basename='pmeeting-agenda',
     parents_query_lookups=['meeting']
 ).register(
     'AgendaItem',
-    views.AIView,
+    views.AgendaItemView,
     basename='pmeeting-agenda-agendaitem',
     parents_query_lookups=['agenda','agenda_id']
 )
 private_meeting_router.register(
     'Minutes',
-    views.MMView,
+    views.MinuteView,
     basename='pmeeting-minutes',
     parents_query_lookups=['meeting']
 )

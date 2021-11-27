@@ -13,26 +13,26 @@ from django.db.models import Q
 
 # Create your views here.
 
-class MView(NestedViewSetMixin, viewsets.ModelViewSet):
+class MeetingView(NestedViewSetMixin, viewsets.ModelViewSet):
     serializer_class = MeetingSerializer
     queryset = Meeting.objects.filter(meeting_type = 'PUB')
 
-class PMView(NestedViewSetMixin, viewsets.ModelViewSet):
+class PrivateMeetingView(NestedViewSetMixin, viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]
     serializer_class = MeetingSerializer
     queryset = Meeting.objects.filter(~Q(meeting_type = 'PUB'))
 
 
-class MMView(NestedViewSetMixin, viewsets.ModelViewSet):
+class MinuteView(NestedViewSetMixin, viewsets.ModelViewSet):
     serializer_class = MeetingMinutesSerializer
     queryset = Minutes.objects.all()
 
 
-class AView(NestedViewSetMixin, viewsets.ModelViewSet):
+class AgendaView(NestedViewSetMixin, viewsets.ModelViewSet):
     serializer_class = AgendaSerializer
     queryset = Agenda.objects.all()
 
 
-class AIView(NestedViewSetMixin, viewsets.ModelViewSet):
+class AgendaItemView(NestedViewSetMixin, viewsets.ModelViewSet):
     serializer_class = AgendaItemSerializer
     queryset = AgendaItem.objects.all()
