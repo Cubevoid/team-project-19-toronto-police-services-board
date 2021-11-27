@@ -11,7 +11,9 @@ function App() {
         <Switch>
           <Route exact path="/" component={() => <Home />}/>
           <Route exact path="/agenda" component={() => <Agenda />}/>
+          <Route exact path="/agenda/:meetingId" component={(props) => <Agenda {...props}/>}/>
           <Route exact path="/minute" component={() => <Minutes />}/>
+          <Route exact path="/minutes/:meetingId" render={(props) => <Minutes {...props}/>}/>
           <Route component={NotFound}/>
         </Switch>
       </Router>

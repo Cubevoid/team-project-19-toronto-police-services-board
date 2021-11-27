@@ -1,7 +1,9 @@
 import React, { Fragment } from "react";
 import Minutes from "./Minutes";
 import Agenda from "./Agenda";
+import Drop from "./Drop"
 import BackendMethods from "./BackendMethods";
+import {CSSTransition} from 'react-transition-group';
 
 class Meetings extends BackendMethods{
 
@@ -10,62 +12,29 @@ class Meetings extends BackendMethods{
 
     this.state = {
       data: {},
-      loading: true,
-      agenda: true
+      loading: true
     };
     this.ITEM = "Meeting/"
-  }
-
-  subTextLabel() {
-    return this.state.agenda ? 'Agenda' : 'Meeting Minutes';
-  }
-
-  displayAgendaOrMinutes() {
-    return this.state.agenda ? <Agenda meetingId={this.state.currentMeeting.id}/> : <Minutes meetingId={this.state.currentMeeting.id}/>;
   }
 
   meetingLabel() {
     return this.state.currentMeeting.title;
   }
 
-  setAgendaOpen() {
-    this.setState({agenda: true});
-  }
-
-  setMinuteOpen() {
-    this.setState({agenda: false});
-  }
-
   setCurrentMeeting(meeting) {
-    this.setState({currentMeeting: meeting});
+    if (this.state.currentMeeting === meeting) {
+      this.setState({currentMeeting: "blah"})
+    } else {
+        this.setState({currentMeeting: meeting});
+    }
   }
 
-  displayMeetingDetails() {
-    return <div className="meeting-details" border="1">
+  displayMeetingDetails(thisMeeting) {
+    return <div className="meeting-details">
       <div className="agenda-minutes-header-left">
-        <h1>{this.meetingLabel()}</h1>
+        <h1>{thisMeeting.title}</h1>
       </div>
-      <ul className="agenda-minutes-header-right">
-        <li className="nav-agenda-minute-1">
-          <a href="#" className="sub-nav-text" onClick={() => this.setAgendaOpen()}>
-            Read Agenda
-          </a>
-        </li>
-        <li className="nav-agenda-minute-1">
-          <a href={this.state.currentMeeting.recording_link} className="sub-nav-text">
-            View on Youtube
-          </a>
-        </li>
-        <li className="nav-agenda-minute-1">
-          <a href="#" className="sub-nav-text" onClick={() => this.setMinuteOpen()}>
-            Read Minutes
-          </a>
-        </li>
-      </ul>
-      <h1 className="header">{this.subTextLabel()}</h1>
-      <div className="meeting-text-output">
-        {this.displayAgendaOrMinutes()}
-      </div>
+      <Drop currentMeeting={thisMeeting} />
     </div>
   }
 
@@ -101,12 +70,23 @@ class Meetings extends BackendMethods{
                     <td>{meeting.title}</td>
                     <td>{meeting.meeting_type}</td>
                   </tr>
+                  <tr className="trh">
+                  <td height="auto" colspan="3" padding="0">
+                  <CSSTransition in={this.state.currentMeeting && this.state.currentMeeting === meeting}
+                                  timeout={1000}
+                                  classNames="dropdown"
+                                  unmountOnExit>
+                    <div height="auto" position="relative">
+                      {this.state.currentMeeting && this.displayMeetingDetails(meeting)}
+                    </div>
+                  </CSSTransition>
+                  </td>
+                  </tr>
                 </Fragment>
               })}
             </tbody>
           </table>
         </div>
-        {this.state.currentMeeting && this.displayMeetingDetails()}
       </div>
     );
   }

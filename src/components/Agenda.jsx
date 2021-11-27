@@ -26,9 +26,8 @@ export default class Agenda extends BackendMethods{
       return <div>didn't get an agenda</div>;
     }
 
-    return this.state.data.filter(data => data.meeting === this.props.meetingId).map((item) => (
+    return this.state.data.filter(data => data.meeting === Number(this.props.match.params.meetingId)).map((item) => (
       <div>
-        <div>MeetingId: {item.meeting}</div>
         <AgendaItem agendaId={item.id}/>
         <br></br>
       </div>

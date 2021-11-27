@@ -46,16 +46,12 @@ function DropdownName(props) {
   return text;
 }
 
-function currentAdminUrl() {
-  return window.location.hostname.includes("localhost") ? 'http://' + window.location.hostname + ':8000/admin/' : 'https://backend-smtcuvoqba-uc.a.run.app/';
-}
-
 function Navigation(props) {
   return (
     <div className="navigation">
       <nav className="navbar">
         <ul className="navbar-nav">
-          <a href={currentAdminUrl()} onClick={() => window.location.href = currentAdminUrl()}>Admin website</a>
+
         </ul>
       </nav>
     </div>

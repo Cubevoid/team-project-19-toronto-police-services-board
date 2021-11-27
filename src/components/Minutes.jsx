@@ -4,7 +4,7 @@ import Parser from 'html-react-parser';
 import BackendMethods from "./BackendMethods";
 
 export default class FetchMinutes extends BackendMethods{
-  constructor(props) {
+  constructor(props, match) {
     super(props);
 
     this.state = {
@@ -29,7 +29,7 @@ export default class FetchMinutes extends BackendMethods{
       return <div>didn't get a meeting</div>;
     }
 
-    return newItems.filter(minute => minute.meeting === this.props.meetingId).map((item) => (
+    return newItems.filter(minute => minute.meeting === Number(this.props.match.params.meetingId)).map((item) => (
       <div>
         <div>MeetingId: {item.meeting}</div>
         <div>Notes: {Parser(DOMPurify.sanitize(item.notes))}</div>
