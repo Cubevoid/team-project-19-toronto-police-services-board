@@ -72,11 +72,13 @@ class Minutes(models.Model):
                                     max_length=4,
                                     default='PUB')
     minute_date = models.DateField('Minute Date')
+    minute_subitem = models.FloatField('Minute Subitem')
+    title = models.CharField('Title', max_length=200)
+    notes = RichTextUploadingField('Notes', blank=True)
+    recommendation = RichTextUploadingField('Recommendations', blank=True)
     mover = models.CharField('Mover', max_length=120)
     seconder = models.CharField('Seconder', max_length=120)
-    attendent =  models.TextField('Attendants')
-    minute_subitem = models.FloatField('Minute Subitem')
-    notes = RichTextUploadingField('Notes', blank=True)
+    attendant =  models.TextField('Attendants', help_text="Separate Attendees by Commas")
 
 
     def __str__(self) -> str:
