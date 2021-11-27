@@ -12,6 +12,10 @@ django-ckeditor = "*"
 django-environ = "*"
 django-admin-interface = "*"
 drf-extensions = "*"
+pdfkit = "*"
+django-singleton-model = "*"
+"pdfminer.six" = "*"
+pypdf3 = "*"
 
 [dev-packages]
 
@@ -19,4 +23,6 @@ drf-extensions = "*"
 python_version = "3.9"
 
 [scripts]
-tests = "python3 manage.py test"
+migrations = "python manage.py makemigrations"
+migrate = "python manage.py migrate"
+tests = "python manage.py test"

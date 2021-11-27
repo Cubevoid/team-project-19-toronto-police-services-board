@@ -41,11 +41,13 @@ There are two ways to run the backend locally:
 
 ### Option 1: Manual setup
 
+These steps assume you are on a UNIX-based system like Linux or MacOS, but the steps on Windows are similar.
+
 - To set up the Python backend’s dependencies, we are using Pipenv (install using `pip install pipenv` or `pip3 install pipenv`). To install the dependencies, navigate to the project directory and run `pipenv install`. Note that the dependencies are listed in the `Pipfile` and their versions in the `Pipfile.lock`.
+- For PDF generation, you will also need [wkhtmltopdf](https://wkhtmltopdf.org/downloads.html) installed on your system.
 - To activate the virtual environment, run `pipenv shell`.
-- Set up the database using `python manage.py makemigrations` and `python manage.py migrate`.
-- Create a new user with `python manage.py createsuperuser` which will prompt you for credentials.
-- Run the development server using `python manage.py runserver`.
+- To set up a clean slate for Django, including a development database and admin user, run `./reset.sh`. You may need to run `chmod +x reset.sh` to make the script executable.
+- To run the development server, use `python manage.py runserver`.
 
 ### Option 2: Docker
 
@@ -61,6 +63,10 @@ For the frontend, you will need `npm`.
 - To install the dependencies, run `npm install`.
 - You can run the frontend using `npm start`.
 - To produce a minified build for deployment, use `npm run build`.
+
+## Handoff
+
+See [Handoff.md](Handoff.md) for handoff instructions.
 
 ## Deployment and Github Workflow
 
