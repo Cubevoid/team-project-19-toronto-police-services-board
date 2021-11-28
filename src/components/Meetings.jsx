@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";  
+import React, { Fragment } from "react";
 import Drop from "./Drop"
 import BackendMethods from "./BackendMethods";
 import {CSSTransition} from 'react-transition-group';
@@ -44,6 +44,11 @@ class Meetings extends React.Component {
     </div>
   }
 
+  isPublic(type) {
+    const MEETING_TYPES = {'PUB': 'Public', 'SPEC': 'Special', 'CONF': 'Confidential'};
+    return MEETING_TYPES[type].toUpperCase();
+  }
+
   render() {
     if (this.state.errors) {
       return <div>could not retrieve meeting information</div>
@@ -74,7 +79,7 @@ class Meetings extends React.Component {
                   <tr key={meeting.id} onClick={() => this.setCurrentMeeting(meeting)}>
                     <td>{meeting.date.substring(0, meeting.date.indexOf('T'))}</td>
                     <td>{meeting.title}</td>
-                    <td>{meeting.meeting_type}</td>
+                    <td>{this.isPublic(meeting.meeting_type)}</td>
                   </tr>
                   <tr className="trh">
                   <td height="auto" colspan="3" padding="0">
