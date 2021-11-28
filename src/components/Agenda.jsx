@@ -10,6 +10,8 @@ export default class Agenda extends React.Component {
       loading: true,
       errors: false
     };
+
+    this.ITEM = "Meeting/" + this.props.match.params.meetingId + "/Agenda/"
   }
 
   async componentDidMount() {
@@ -19,7 +21,7 @@ export default class Agenda extends React.Component {
     }
     this.setState({ data: data});
 
-    const meetingData = await BackendMethods.fetchItems("Meeting/" + this.props.match.params.meetingId);
+    const meetingData = await BackendMethods.fetchItems("Meeting/" + this.props.match.params.meetingId + "/");
     if (!meetingData) {
       this.setState({errors:true});
     }
@@ -27,7 +29,6 @@ export default class Agenda extends React.Component {
   }
 
   render() {
-    this.SUBITEM = this.props.meetingId + '/Agenda/'
     if (this.state.errors) {
       return <div>could not retrieve agenda information</div>
     }
@@ -40,8 +41,7 @@ export default class Agenda extends React.Component {
       return <div>didn't get an agenda</div>;
     }
 
-    return this.state.data.filter(data => data.meeting === Number(this.props.match.params.meetingId)).map((item) => (
-      <div>
+    return <div>
         <div className="agenda-title">
           <div className="flex"><img src={require('./../img/tpsb_icon.png').default} /></div>
           <br></br>
@@ -54,10 +54,9 @@ export default class Agenda extends React.Component {
         </div>
         <div>
 
-          <AgendaItem agendaId={item.id}/>
+          <AgendaItem agenda={this.state.data[0]}/>
         </div>
         <br></br>
-      </div>
-    ));
+      </div>;
   }
 }

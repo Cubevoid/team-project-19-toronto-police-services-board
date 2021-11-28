@@ -13,6 +13,8 @@ export default class AgendaItem extends React.Component {
       loading: true,
       errors: false
     };
+
+    this.ITEM = "Meeting/" + this.props.agenda.meeting + "/Agenda/" + this.props.agenda.id + "/AgendaItem/"
   }
 
   async componentDidMount() {
@@ -45,8 +47,6 @@ export default class AgendaItem extends React.Component {
   }
 
   render() {
-    this.SUBITEM = this.props.meetingId + '/Agenda/'
-    this.SUBSUBITEM = this.props.agendaId + '/AgendaItem/'
     if (this.state.errors) {
       return <div>could not retrieve agenda information</div>
     }
@@ -56,7 +56,7 @@ export default class AgendaItem extends React.Component {
     }
 
     if (!this.state.data) {
-      return <div>didn't get an agenda</div>;
+      return <div>didn't get an agenda item</div>;
     }
 
     return <table className="agendaItem-table">
@@ -65,7 +65,7 @@ export default class AgendaItem extends React.Component {
           <th>Number</th>
           <th>Title</th>
         </tr>
-        {this.state.data.filter(data => data.agenda === this.props.agendaId).sort((a,b) => a.number - b.number).map((agendaItem) => {
+        {this.state.data.sort((a,b) => a.number - b.number).map((agendaItem) => {
           return <Fragment>
             <tr key={agendaItem.id} onClick={() => this.setCurrentAgendaItem(agendaItem)}>
               <td>{agendaItem.number}</td>

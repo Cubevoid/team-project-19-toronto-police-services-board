@@ -2,7 +2,7 @@
 
 ## Description
 
-We are building a website with a backend for the Toronto Police Services Board to allow administrators to record meeting information/minutes and display the information and agendas of these meetings to the general public. The website will help make Board meetings more accessible to the general public in Toronto interested in being engaged with oversight of the Toronto Police Service Users: Board Administrator / Board Members. The website will also allow for more straightforward modification and recording of information directly related to tpsb meetings, to assist board admisistrators.
+We are building a website with a backend for the Toronto Police Services Board to allow administrators to record meeting information/minutes and display the information and agendas of these meetings to the general public. The website will help make Board meetings more accessible to the general public in Toronto interested in being engaged with oversight of the Toronto Police Service Users: Board Administrator / Board Members. The website will also allow for more straightforward modification and recording of information directly related to tpsb meetings, to assist board administrators.
 
 Currently the partner is using a 300-page long PDF to record this information and modifying it using Joomla CMS. This process is labour intensive and not very accessible to the public. The product will allow for all the information to be displayed clearly and for administrators to update and add to the information easily.
 
@@ -80,7 +80,7 @@ For deployment, we use automation through GitHub Actions. The backend is deploye
 
 For all of our GitHub Actions workflows, we made sure to implement caching of the dependencies/libraries and build artifacts so that subsequent runs of the workflows would be much faster. This way, we do not waste Actions time.
 
-We decided to use severless platforms for deployment like Google Cloud Run and Firebase in order to simplify deployment and the eventual handoff to our partner. This way, we do not have to manage server infrastructure such as VMs, and because we are testing our code with low volume, we easily fall into the free tier of GCP.
+We decided to use serverless platforms for deployment like Google Cloud Run and Firebase in order to simplify deployment and the eventual handoff to our partner. This way, we do not have to manage server infrastructure such as VMs, and because we are testing our code with low volume, we easily fall into the free tier of GCP.
 
 ## Licenses
 

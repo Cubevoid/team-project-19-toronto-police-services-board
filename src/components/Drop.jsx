@@ -12,7 +12,7 @@ export default class Drop extends React.Component {
       errors: false,
       currentMeeting: this.props.currentMeeting
     };
-    this.ITEM = "Agenda/"
+    this.ITEM = "Meeting/" + this.props.currentMeeting.id + "/Agenda/";
   }
 
   async componentDidMount() {
@@ -31,7 +31,7 @@ export default class Drop extends React.Component {
     this.setState({ data: data});
 
     this.setState({agenda : this.state.data})
-    this.ITEM = "Minutes/"
+    this.ITEM = "Meeting/" + this.state.currentMeeting.id + "/Minutes/"
 
     const url1 = BackendMethods.currentAdminUrl(this.ITEM);
     const response1 = await fetch(url1)
