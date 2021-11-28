@@ -1,9 +1,10 @@
-import React from "react";
+import React, { Fragment } from "react";
 import DOMPurify from 'dompurify';
 import Parser from 'html-react-parser';
 import BackendMethods from "./BackendMethods";
+import {CSSTransition} from 'react-transition-group';
 
-export default class AgendaItem extends BackendMethods{
+export default class AgendaItem extends React.Component {
 
   constructor(props) {
     super(props);
@@ -13,6 +14,35 @@ export default class AgendaItem extends BackendMethods{
       errors: false
     };
     this.ITEM = 'AgendaItem/'
+  }
+
+  async componentDidMount() {
+    const data = await BackendMethods.fetchItems(this.ITEM)
+    if (!data) {
+      this.setState({errors:true});
+    }
+    this.setState({ data: data, loading: false });
+  }
+
+  setCurrentAgendaItem(agendaItem) {
+    if (this.state.currentAgendaItem === agendaItem) {
+      this.setState({currentAgendaItem: "blah"})
+    } else {
+        this.setState({currentAgendaItem: agendaItem});
+    }
+  }
+
+  displayAgendaItemDetails(item) {
+    return <div>
+      <img width="50%" src={require('./../img/tpsb_dropdown_header.png').default} />
+      <div>
+        <div style={{ textAlign: "Left" }}> {Parser(DOMPurify.sanitize(item.description))}</div>
+        {item.result && <div>Result: {item.result}</div>}
+        <div>{Parser(DOMPurify.sanitize(item.motion))}</div>
+        {item.file && <a className="download-attach" href={item.file} download>Download Attachments: {item.file ? item.file.split('/').pop() : item.file}</a>}
+        <br></br>
+      </div>
+    </div>
   }
 
   render() {
@@ -29,16 +59,34 @@ export default class AgendaItem extends BackendMethods{
       return <div>didn't get an agenda</div>;
     }
 
-    return this.state.data.filter(data => data.agenda === this.props.agendaId).map((item) => (
-      <div>
-        <div>AgendaId: {item.agenda}</div>
-        <div>Title: {item.title}</div>
-        <div> {Parser(DOMPurify.sanitize(item.description))}</div>
-        <div>Result: {item.result}</div>
-        <div>Motion: {Parser(DOMPurify.sanitize(item.motion))}</div>
-        <a className="download-attach" href={item.file} download>{item.file ? item.file.split('/').pop() : item.file}</a>
-        <br></br>
-      </div>
-    ));
+    return <table className="agendaItem-table">
+      <tbody>
+        <tr>
+          <th>Number</th>
+          <th>Title</th>
+        </tr>
+        {this.state.data.filter(data => data.agenda === this.props.agendaId).sort((a,b) => a.number - b.number).map((agendaItem) => {
+          return <Fragment>
+            <tr key={agendaItem.id} onClick={() => this.setCurrentAgendaItem(agendaItem)}>
+              <td>{agendaItem.number}</td>
+              <td>{agendaItem.title}</td>
+            </tr>
+            <tr className="trh">
+              <td height="auto" colspan="3" padding="0">
+                <CSSTransition in={this.state.currentAgendaItem && this.state.currentAgendaItem === agendaItem}
+                                timeout={1000}
+                                classNames="dropdown"
+                                unmountOnExit>
+                  <div height="auto" position="relative">
+                    {this.state.currentAgendaItem && this.displayAgendaItemDetails(agendaItem)}
+                  </div>
+                </CSSTransition>
+              </td>
+            </tr>
+          </Fragment>
+        })}
+      </tbody>
+    </table>
+
   }
 }

@@ -5,7 +5,8 @@ import Drop from "./Drop"
 import BackendMethods from "./BackendMethods";
 import {CSSTransition} from 'react-transition-group';
 
-class Meetings extends BackendMethods{
+class Meetings extends React.Component {
+  ITEM = "Meeting/"
 
   constructor(props) {
     super(props);
@@ -14,7 +15,14 @@ class Meetings extends BackendMethods{
       data: {},
       loading: true
     };
-    this.ITEM = "Meeting/"
+  }
+
+  async componentDidMount() {
+    const data = await BackendMethods.fetchItems(this.ITEM)
+    if (!data) {
+      this.setState({errors:true});
+    }
+    this.setState({ data: data, loading: false });
   }
 
   meetingLabel() {

@@ -3,7 +3,7 @@ import DOMPurify from 'dompurify';
 import Parser from 'html-react-parser';
 import BackendMethods from "./BackendMethods";
 
-export default class Drop extends BackendMethods{
+export default class Drop extends React.Component {
   constructor(props) {
     super(props);
 
@@ -16,7 +16,7 @@ export default class Drop extends BackendMethods{
   }
 
   async componentDidMount() {
-    const url = this.currentAdminUrl();
+    const url = BackendMethods.currentAdminUrl(this.ITEM);
     const response = await fetch(url)
       .then(function (response) {
         if (!response.ok) {
@@ -33,7 +33,7 @@ export default class Drop extends BackendMethods{
     this.setState({agenda : this.state.data})
     this.ITEM = "Minutes/"
 
-    const url1 = this.currentAdminUrl();
+    const url1 = BackendMethods.currentAdminUrl(this.ITEM);
     const response1 = await fetch(url1)
       .then(function (response1) {
         if (!response1.ok) {
@@ -64,6 +64,19 @@ export default class Drop extends BackendMethods{
 
     return <a className="sub-nav-blank">
       Read Agenda
+    </a>
+  }
+
+  setYouTubeLink() {
+    const data = this.state.currentMeeting.recording_link
+    if (data) {
+      return <a href={this.state.currentMeeting.recording_link} className="sub-nav-text">
+        View on Youtube
+      </a>
+    }
+
+    return <a className="sub-nav-blank">
+      View on Youtube
     </a>
   }
 
@@ -98,9 +111,7 @@ export default class Drop extends BackendMethods{
         {this.setAgenda()}
       </li>
       <li className="nav-agenda-minute-1">
-        <a href={this.state.currentMeeting.recording_link} className={"sub-nav-" + (this.state.currentMeeting.recording_link ? "text" : "blank")}>
-          View on Youtube
-        </a>
+        {this.setYouTubeLink()}
       </li>
       <li className="nav-agenda-minute-1">
         {this.setMinute()}

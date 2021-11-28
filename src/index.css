@@ -159,6 +159,30 @@ tr.trh:hover {
   background-color: white;
 }
 
+.agendaItem-table {
+  justify-content: center;
+  max-width: 80%;
+  align-items: center;
+  float: none;
+  margin: 0 auto;
+}
+
+.agenda-title {
+  justify-content: center;
+  align-items: center;
+  float: none;
+  height: 100%;
+  margin: 0 auto;
+}
+
+.flex {
+  margin-top: 100px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .meeting-table {
   display: flex;
   justify-content: center;

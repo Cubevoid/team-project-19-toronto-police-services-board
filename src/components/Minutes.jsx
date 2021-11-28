@@ -3,7 +3,7 @@ import DOMPurify from 'dompurify';
 import Parser from 'html-react-parser';
 import BackendMethods from "./BackendMethods";
 
-export default class FetchMinutes extends BackendMethods{
+export default class FetchMinutes extends React.Component {
   constructor(props, match) {
     super(props);
 
@@ -12,6 +12,14 @@ export default class FetchMinutes extends BackendMethods{
       errors: false
     };
     this.ITEM = "Minutes/"
+  }
+
+  async componentDidMount() {
+    const data = await BackendMethods.fetchItems(this.ITEM)
+    if (!data) {
+      this.setState({errors:true});
+    }
+    this.setState({ data: data, loading: false });
   }
 
   render() {
