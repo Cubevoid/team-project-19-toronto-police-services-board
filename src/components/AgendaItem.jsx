@@ -13,7 +13,6 @@ export default class AgendaItem extends React.Component {
       loading: true,
       errors: false
     };
-    this.ITEM = 'AgendaItem/'
   }
 
   async componentDidMount() {
@@ -46,7 +45,8 @@ export default class AgendaItem extends React.Component {
   }
 
   render() {
-
+    this.SUBITEM = this.props.meetingId + '/Agenda/'
+    this.SUBSUBITEM = this.props.agendaId + '/AgendaItem/'
     if (this.state.errors) {
       return <div>could not retrieve agenda information</div>
     }

@@ -7,19 +7,18 @@ from .models import Meeting
 class MeetingMinutesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Minutes
-        fields = ('id','meeting', 'notes')
-
+        fields = '__all__'
 class AgendaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Agenda
-        fields = ('id', 'meeting')
+        fields =  '__all__'
 
 class AgendaItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = AgendaItem
-        fields = ('id', 'agenda', 'title', 'description', 'result', 'motion', 'file')
+        fields =  '__all__'
 
 class MeetingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Meeting
-        fields = ('id','title', 'date', 'recording_link', 'description', 'meeting_type')
+        fields =  '__all__'
