@@ -67,7 +67,19 @@ class Attachment(models.Model):
 
 class Minutes(models.Model):
     meeting = models.OneToOneField(Meeting, on_delete=CASCADE)
+    minute_type = models.CharField('Minute Type',
+                                    choices=MEETING_TYPES,
+                                    max_length=4,
+                                    default='PUB')
+    minute_date = models.DateField('Minute Date')
+    minute_subitem = models.FloatField('Minute Subitem')
+    title = models.CharField('Title', max_length=200)
     notes = RichTextUploadingField('Notes', blank=True)
+    recommendation = RichTextUploadingField('Recommendations', blank=True)
+    mover = models.CharField('Mover', max_length=120)
+    seconder = models.CharField('Seconder', max_length=120)
+    attendant =  models.TextField('Attendants', help_text="Separate Attendees by Commas")
+
 
     def __str__(self) -> str:
         return f'{self.meeting.title} Minutes'

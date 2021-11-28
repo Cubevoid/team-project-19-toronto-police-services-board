@@ -12,11 +12,11 @@ export default class AgendaItem extends BackendMethods{
       loading: true,
       errors: false
     };
-    this.ITEM = 'AgendaItem/'
   }
 
   render() {
-
+    this.SUBITEM = this.props.meetingId + '/Agenda/'
+    this.SUBSUBITEM = this.props.agendaId + '/AgendaItem/'
     if (this.state.errors) {
       return <div>could not retrieve agenda information</div>
     }

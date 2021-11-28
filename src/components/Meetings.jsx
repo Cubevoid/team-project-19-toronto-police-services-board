@@ -11,7 +11,7 @@ class Meetings extends BackendMethods{
     this.state = {
       data: {},
       loading: true,
-      agenda: true
+      agenda: true,
     };
     this.ITEM = "Meeting/"
   }
