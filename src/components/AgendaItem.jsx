@@ -33,12 +33,18 @@ export default class AgendaItem extends React.Component {
     }
   }
 
+  displayResult(result) {
+    const POSSIBLE_DECISIONS = {'TBC': 'To be considered', 'CUC': 'Currently under consideration', 'A': 'Approved',
+                            'AWM': 'Approved with motion', 'R': 'Rejected'};
+    return POSSIBLE_DECISIONS[result].toUpperCase();
+  }
+
   displayAgendaItemDetails(item) {
     return <div>
       <img width="50%" src={require('./../img/tpsb_dropdown_header.png').default} />
       <div>
         <div style={{ textAlign: "Left" }}> {Parser(DOMPurify.sanitize(item.description))}</div>
-        {item.result && <div>Result: {item.result}</div>}
+        {item.result && <div style={{fontWeight: 'bold'}}>STATUS: {this.displayResult(item.result)}</div>}
         <div>{Parser(DOMPurify.sanitize(item.motion))}</div>
         {item.file && <a className="download-attach" href={item.file} download>Download Attachments: {item.file ? item.file.split('/').pop() : item.file}</a>}
         <br></br>

@@ -47,7 +47,7 @@ export default class Agenda extends React.Component {
           <br></br>
           <h1 style={{ textAlign: "Center" }}>Online Virtual Meeting</h1>
           <h1 style={{ textAlign: "Center" }}>{this.state.meetingData.date.substring(0, this.state.meetingData.date.indexOf('T')).split('/').reverse()}</h1>
-          <h1 style={{ textAlign: "Center" }}>{this.state.meetingData.date.substring(this.state.meetingData.date.indexOf('T') + 1, this.state.meetingData.date.length).split('/').reverse()}</h1>
+          <h1 style={{ textAlign: "Center" }}>At {this.state.meetingData.date.substring(this.state.meetingData.date.indexOf('T') + 1, this.state.meetingData.date.length).split('-')[0]}</h1>
           <div className="flex"><img width="100%" src={require('./../img/tpsb_after_title.png').default} /></div>
           <br></br>
           <h2 style={{ textAlign: "Center" }}>Items for consideration:</h2>
