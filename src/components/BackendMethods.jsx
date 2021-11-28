@@ -1,16 +1,13 @@
-import React from "react";
+export default class BackendMethods {
+  static PATH = '8000'
 
-export default class BackendMethods extends React.Component {
-  PATH = '8000'
-  ITEM = 'Meeting/'
-  SUBITEM = ''
-  SUBSUBITEM = ''
-  currentAdminUrl() {
-    return window.location.hostname.includes("localhost") ? 'http://' + window.location.hostname + ':' + this.PATH + '/api/' + this.ITEM + this.SUBITEM + this.SUBSUBITEM : 'https://backend-smtcuvoqba-uc.a.run.app/' + 'api/' + this.ITEM;
+  static currentAdminUrl(item) {
+    return window.location.hostname.includes("localhost") ? 'http://' + window.location.hostname + ':' + this.PATH + '/api/' + item : 'https://backend-smtcuvoqba-uc.a.run.app/' + 'api/' + item;
   }
 
-  async componentDidMount() {
-    const url = this.currentAdminUrl();
+  static async fetchItems(item) {
+    const url = this.currentAdminUrl(item);
+    var errors = false;
     const response = await fetch(url)
       .then(function (response) {
         if (!response.ok) {
@@ -18,10 +15,10 @@ export default class BackendMethods extends React.Component {
         }
         return response;
       }).catch(error => {
-        this.setState({ errors: true })
+        errors = true;
       });
 
-    const data = this.state.errors ? null : await response.json();
-    this.setState({ data: data, loading: false });
+    const data = errors ? null : await response.json();
+    return data;
   }
 }
