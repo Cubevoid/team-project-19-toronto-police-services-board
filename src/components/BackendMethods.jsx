@@ -1,5 +1,3 @@
-import React from "react";
-
 export default class BackendMethods {
   static PATH = '8000'
 

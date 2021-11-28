@@ -1,6 +1,4 @@
 import React from "react";
-import DOMPurify from 'dompurify';
-import Parser from 'html-react-parser';
 import BackendMethods from "./BackendMethods";
 
 export default class Drop extends React.Component {
@@ -70,7 +68,7 @@ export default class Drop extends React.Component {
   setYouTubeLink() {
     const data = this.state.currentMeeting.recording_link
     if (data) {
-      return <a href={this.state.currentMeeting.recording_link} className="sub-nav-text">
+      return <a href={this.state.currentMeeting.recording_link} target="_blank" className="sub-nav-text">
         View on Youtube
       </a>
     }

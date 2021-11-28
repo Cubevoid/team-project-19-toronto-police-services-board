@@ -1,6 +1,4 @@
-import React, { Fragment } from "react";
-import Minutes from "./Minutes";
-import Agenda from "./Agenda";
+import React, { Fragment } from "react";  
 import Drop from "./Drop"
 import BackendMethods from "./BackendMethods";
 import {CSSTransition} from 'react-transition-group';
@@ -33,7 +31,7 @@ class Meetings extends React.Component {
     if (this.state.currentMeeting === meeting) {
       this.setState({currentMeeting: "blah"})
     } else {
-        this.setState({currentMeeting: meeting});
+      this.setState({currentMeeting: meeting});
     }
   }
 

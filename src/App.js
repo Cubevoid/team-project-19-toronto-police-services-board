@@ -1,7 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { Navigation, Footer, Home, Agenda, Minutes, NotFound } from "./components";
-import { Link, withRouter } from "react-router-dom";
+import { Navigation, Home, Agenda, Minutes, NotFound } from "./components";
 
 function App() {
   return (

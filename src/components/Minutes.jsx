@@ -19,7 +19,7 @@ export default class FetchMinutes extends React.Component {
     if (!data) {
       this.setState({errors:true});
     }
-    this.setState({ data: data});
+    this.setState({ data: data[0]});
 
     const meetingData = await BackendMethods.fetchItems("Meeting/" + this.props.match.params.meetingId + "/");
     if (!meetingData) {
@@ -28,9 +28,12 @@ export default class FetchMinutes extends React.Component {
     this.setState({ meetingData: meetingData, loading: false });
   }
 
-  render() {
-    const newItems = this.state.data;
+  isPublic(type) {
+    const MEETING_TYPES = {'PUB': 'Public', 'SPEC': 'Special', 'CONF': 'Confidential'};
+    return MEETING_TYPES[type].toUpperCase();
+  }
 
+  render() {
     if (this.state.errors) {
       return <div>could not retrieve meeting minutes information</div>
     }
@@ -50,12 +53,19 @@ export default class FetchMinutes extends React.Component {
           <h1 style={{ textAlign: "Center" }}>Online Virtual Meeting</h1>
           <h1 style={{ textAlign: "Center" }}>{this.state.meetingData.date.substring(0, this.state.meetingData.date.indexOf('T')).split('/').reverse()}</h1>
           <h1 style={{ textAlign: "Center" }}>{this.state.meetingData.date.substring(this.state.meetingData.date.indexOf('T') + 1, this.state.meetingData.date.length).split('/').reverse()}</h1>
-          <div className="flex"><img width="100%" src={require('./../img/tpsb_after_title.png').default} /></div>
           <br></br>
-          <h2 style={{ textAlign: "Center" }}>Items Considered:</h2>
+          <h2 style={{ textAlign: "Center" }}>{this.isPublic(this.state.data.minute_type)} MEETING MINUTES</h2>
+          <h3 style={{ textAlign: "Center" }}>{this.state.data.minute_date}</h3>
         </div>
-        <div>MeetingId: {newItems.meeting}</div>
-        <div>Notes: {Parser(DOMPurify.sanitize(newItems.notes))}</div>
+        <div>
+          <h3 style={{ textAlign: "Center" }}>{this.state.data.title}</h3>
+          <div>{Parser(DOMPurify.sanitize(this.state.data.reccomendation))}</div>
+          <p>Mover: {this.state.data.mover}</p>
+          <p>Seconder: {this.state.data.seconder}</p>
+          <p>Attendant: {this.state.data.attendant}</p>
+          <br></br>
+          <div>{Parser(DOMPurify.sanitize(this.state.data.notes))}</div>
+        </div>
         <br></br>
       </div>
   }
