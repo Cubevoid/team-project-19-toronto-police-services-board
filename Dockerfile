@@ -38,4 +38,4 @@ ENV BACKEND_URL ${BACKEND_URL}
 ENV FRONTEND_URL ${FRONTEND_URL}
 
 # runs the development server
-CMD python manage.py test
+CMD python manage.py runserver

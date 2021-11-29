@@ -2,14 +2,17 @@ from typing import List, Iterable, Any
 
 from PyPDF3 import PdfFileMerger, PdfFileReader, PdfFileWriter
 from PyPDF3.generic import Destination
-from meetings.models import *
+from .models import AgendaTemplate, Agenda, AgendaItem
 from pytz import timezone
 from tpsb.settings import TIME_ZONE, BASE_DIR
 import pdfkit
 from django.template import Template, Context
 import re, os, sys
 from pdfminer.high_level import extract_pages
+import io
 
+def generate_agenda_pdf(agenda, output_path):
+    generate_agenda(AgendaTemplate.objects.all().get(), agenda, list(AgendaItem.objects.filter(agenda=agenda)), output_path)
 
 def generate_agenda(template: AgendaTemplate,
                     agenda: Agenda,
@@ -69,7 +72,9 @@ def generate_agenda(template: AgendaTemplate,
             page_nums[agenda_item.id] = len(merger.pages)
             merger.append(pdfs[agenda_item.id], bookmark=os.path.basename(pdfs[agenda_item.id]))
 
+  
     merger.write(output_path)
+    
     merger.close()
 
     add_links(temp_path, output_path, agenda_items, pdfs, page_nums)
