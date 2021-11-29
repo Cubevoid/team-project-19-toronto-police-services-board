@@ -8,6 +8,7 @@ import tpsb.settings as settings
 from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.db.models.deletion import CASCADE
+from django.utils.html import mark_safe
 
 # Create your models here.
 
@@ -30,14 +31,18 @@ class Meeting(models.Model):
         time = self.date.astimezone(tz)
         return f'[{time.strftime("%B %d, %Y %I:%M %p")}] {self.title}'
 
-
 class Agenda(models.Model):
     meeting = models.OneToOneField(Meeting, on_delete=CASCADE)
 
     def __str__(self) -> str:
         return f'{self.meeting.title} Agenda'
 
+    def generate_pdf(self) : 
+        import meetings.create_pdf as create_pdf
+        create_pdf.generate_agenda_pdf(self, os.path.join(settings.BASE_DIR, f"uploads/{self.pk}.pdf"))
+        return mark_safe(f'<a class="button" href="{os.path.join(settings.BASE_DIR, f"uploads/{self.pk}.pdf")}">Generate PDF</a>')
 
+    
 class AgendaItem(models.Model):
     agenda = models.ForeignKey(Agenda, on_delete=CASCADE)
     number = models.FloatField('Agenda Item Number')
@@ -98,3 +103,4 @@ class AgendaTemplate(SingletonModel):
     
     class Meta:
         verbose_name_plural = "Agenda Template"
+
