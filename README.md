@@ -53,7 +53,7 @@ These steps assume you are on a UNIX-based system like Linux or MacOS, but the s
 
 Make sure you have Docker installed on your machine.
 
-- Build the docker image using `docker build -t backend .` (you may need `sudo` if you are on Linux)
+- Build the docker image using `docker build -t backend:latest --build-arg FRONTEND_URL={frontend URL} --build-arg BACKEND_URL={backend URL} .` (you may need `sudo` if you are on Linux)
 - Run the docker image using `docker run -e "PORT=8080" -p 8080:8080 backend` (again, you may need `sudo`). You can use whichever port you’d like.
 
 ### Frontend
