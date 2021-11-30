@@ -1,16 +1,17 @@
 from django.contrib import admin
-
+from django.utils.html import format_html
 from meetings.models import *
-
+from meetings.create_pdf import *
 
 class AgendaItemInline(admin.StackedInline):
     model = AgendaItem
     extra = 0
 
 
+
 class AgendaAdmin(admin.ModelAdmin):
     inlines = [AgendaItemInline]
-    list_display = ('meeting_title', 'meeting_date', 'meeting_type')
+    list_display = ('meeting_title', 'meeting_date', 'meeting_type', 'generate_pdf')
     search_fields = ('meeting',)
 
     def meeting_title(self, obj):
