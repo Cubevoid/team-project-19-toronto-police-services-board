@@ -40,7 +40,7 @@ class Agenda(models.Model):
     def generate_pdf(self) : 
         import meetings.create_pdf as create_pdf
         create_pdf.generate_agenda_pdf(self, os.path.join(settings.BASE_DIR, f"uploads/{self.pk}.pdf"))
-        return mark_safe(f'<a class="button" href="{os.path.join(settings.BASE_DIR, f"uploads/{self.pk}.pdf")}">Generate PDF</a>')
+        return mark_safe(f'<a class="button" href="{f"/uploads/{self.pk}.pdf"}">Generate PDF</a>')
 
     
 class AgendaItem(models.Model):
