@@ -32,7 +32,7 @@ WORKDIR /src
 COPY . ./
 RUN pipenv install --system --deploy
 
-RUN ./reset.sh
+RUN sh reset.sh
 
 ENV BACKEND_URL ${BACKEND_URL}
 ENV FRONTEND_URL ${FRONTEND_URL}
