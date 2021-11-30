@@ -1,9 +1,10 @@
-import React from "react";
+import React, { Fragment } from "react";
 import DOMPurify from 'dompurify';
 import Parser from 'html-react-parser';
 import BackendMethods from "./BackendMethods";
+import {CSSTransition} from 'react-transition-group';
 
-export default class AgendaItem extends BackendMethods{
+export default class AgendaItem extends React.Component {
 
   constructor(props) {
     super(props);
@@ -12,11 +13,46 @@ export default class AgendaItem extends BackendMethods{
       loading: true,
       errors: false
     };
-    this.ITEM = 'AgendaItem/'
+
+    this.ITEM = "Meeting/" + this.props.agenda.meeting + "/Agenda/" + this.props.agenda.id + "/AgendaItem/"
+  }
+
+  async componentDidMount() {
+    const data = await BackendMethods.fetchItems(this.ITEM)
+    if (!data) {
+      this.setState({errors:true});
+    }
+    this.setState({ data: data, loading: false });
+  }
+
+  setCurrentAgendaItem(agendaItem) {
+    if (this.state.currentAgendaItem === agendaItem) {
+      this.setState({currentAgendaItem: "blah"})
+    } else {
+        this.setState({currentAgendaItem: agendaItem});
+    }
+  }
+
+  displayResult(result) {
+    const POSSIBLE_DECISIONS = {'TBC': 'To be considered', 'CUC': 'Currently under consideration', 'A': 'Approved',
+                            'AWM': 'Approved with motion', 'R': 'Rejected'};
+    return POSSIBLE_DECISIONS[result].toUpperCase();
+  }
+
+  displayAgendaItemDetails(item) {
+    return <div>
+      <img width="50%" src={require('./../img/tpsb_dropdown_header.png').default} />
+      <div>
+        <div style={{ textAlign: "Left" }}> {Parser(DOMPurify.sanitize(item.description))}</div>
+        {item.result && <div style={{fontWeight: 'bold'}}>STATUS: {this.displayResult(item.result)}</div>}
+        <div>{Parser(DOMPurify.sanitize(item.motion))}</div>
+        {item.file && <a className="download-attach" href={item.file} download>Download Attachments: {item.file ? item.file.split('/').pop() : item.file}</a>}
+        <br></br>
+      </div>
+    </div>
   }
 
   render() {
-
     if (this.state.errors) {
       return <div>could not retrieve agenda information</div>
     }
@@ -26,19 +62,37 @@ export default class AgendaItem extends BackendMethods{
     }
 
     if (!this.state.data) {
-      return <div>didn't get an agenda</div>;
+      return <div>didn't get an agenda item</div>;
     }
 
-    return this.state.data.filter(data => data.agenda === this.props.agendaId).map((item) => (
-      <div>
-        <div>AgendaId: {item.agenda}</div>
-        <div>Title: {item.title}</div>
-        <div> {Parser(DOMPurify.sanitize(item.description))}</div>
-        <div>Result: {item.result}</div>
-        <div>Motion: {Parser(DOMPurify.sanitize(item.motion))}</div>
-        <a className="download-attach" href={item.file} download>{item.file ? item.file.split('/').pop() : item.file}</a>
-        <br></br>
-      </div>
-    ));
+    return <table className="agendaItem-table">
+      <tbody>
+        <tr>
+          <th>Number</th>
+          <th>Title</th>
+        </tr>
+        {this.state.data.sort((a,b) => a.number - b.number).map((agendaItem) => {
+          return <Fragment>
+            <tr key={agendaItem.id} onClick={() => this.setCurrentAgendaItem(agendaItem)}>
+              <td>{agendaItem.number}</td>
+              <td>{agendaItem.title}</td>
+            </tr>
+            <tr className="trh">
+              <td height="auto" colspan="3" padding="0">
+                <CSSTransition in={this.state.currentAgendaItem && this.state.currentAgendaItem === agendaItem}
+                                timeout={1000}
+                                classNames="dropdown"
+                                unmountOnExit>
+                  <div height="auto" position="relative">
+                    {this.state.currentAgendaItem && this.displayAgendaItemDetails(agendaItem)}
+                  </div>
+                </CSSTransition>
+              </td>
+            </tr>
+          </Fragment>
+        })}
+      </tbody>
+    </table>
+
   }
 }

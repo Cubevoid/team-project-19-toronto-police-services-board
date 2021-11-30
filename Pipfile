@@ -10,7 +10,12 @@ django-cors-headers = "*"
 requests = "*"
 django-ckeditor = "*"
 django-environ = "*"
-django-admin-interface = "*"
+django-admin-interface = "==0.17.3"
+drf-extensions = "*"
+pdfkit = "*"
+django-singleton-model = "*"
+"pdfminer.six" = "*"
+pypdf3 = "*"
 
 [dev-packages]
 
@@ -18,4 +23,6 @@ django-admin-interface = "*"
 python_version = "3.9"
 
 [scripts]
-tests = "python3 manage.py test"
+migrations = "python manage.py makemigrations"
+migrate = "python manage.py migrate"
+tests = "python manage.py test"

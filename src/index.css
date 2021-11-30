@@ -19,7 +19,7 @@ code {
   --nav-size: 80px;
   --border: 1px solid #474a4d;
   --border-radius: 8px;
-  --speed: 500ms;
+  --speed: 1000ms;
 }
 
 ul {
@@ -56,9 +56,9 @@ a {
 }
 
 .dropdown {
-  position: absolute;
-  top: 80px;
-  width: inherit;
+  position: relative;
+  height: auto;
+  width: 800px;
   background-color: #192543;
   border: var(--border);
   border-radius: var(--border-radius);
@@ -66,9 +66,33 @@ a {
   overflow: hidden;
 }
 
+.dropdown-enter {
+  position: relative;
+  max-height: 0px;
+  overflow: hidden;
+}
+
+.dropdown-enter-active {
+  max-height: 500px;
+  transition: all var(--speed) ease;
+  overflow: hidden;
+}
+
+.dropdown-exit {
+  max-height: 500px;
+  position: relative;
+  overflow: hidden;
+}
+
+.dropdown-exit-active {
+  max-height: 0px;
+  transition: all var(--speed) ease;
+  overflow: hidden;
+}
+
 .menu-item {
-  height: 50px;
   display: flex;
+  font-size: 25px;
   align-items: center;
   border-radius: var(--border-radius);
   transition: background var(--speed);
@@ -120,11 +144,43 @@ th {
 
 tr:nth-child(1) { background-color: #e5e8ed; }
 
-tr:hover { background-color: #e5e8ed !important; }
+tr:hover { background-color: #e5e8ed; }
 
 tr.tm-tr-header {
   background-color: #c4cdd6;
   height: 50px;
+}
+
+tr.trh {
+  grid-template-rows: auto 1fr auto;
+}
+
+tr.trh:hover {
+  background-color: white;
+}
+
+.agendaItem-table {
+  justify-content: center;
+  max-width: 80%;
+  align-items: center;
+  float: none;
+  margin: 0 auto;
+}
+
+.agenda-title {
+  justify-content: center;
+  align-items: center;
+  float: none;
+  height: 100%;
+  margin: 0 auto;
+}
+
+.flex {
+  margin-top: 100px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .meeting-table {
@@ -137,15 +193,16 @@ tr.tm-tr-header {
 }
 
 .meeting-details {
+  position: relative;
   justify-content: center;
-  max-width: 60%;
-  min-width: 280px;
   align-items: center;
-  float: none;
+  height: inherit;
   margin: 0 auto;
   margin-top: 2rem;
   padding-left: 0.3rem;
   border: solid #DCDCDC 1px;
+
+  overflow: hidden;
 }
 
 .agenda-minutes-header-left {
@@ -167,6 +224,14 @@ tr.tm-tr-header {
   align-items: center;
   justify-content: center;
   padding-top: 0.6rem;
+}
+
+.sub-nav-blank {
+  color: grey;
+  font-weight: bolder;
+  justify-content: right;
+  padding: 0.5rem;
+  border: 1px solid #DCDCDC;
 }
 
 .sub-nav-text {

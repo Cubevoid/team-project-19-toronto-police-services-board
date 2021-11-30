@@ -2,7 +2,7 @@
 
 ## Description
 
-We are building a website with a backend for the Toronto Police Services Board to allow administrators to record meeting information/minutes and display the information and agendas of these meetings to the general public. The website will help make Board meetings more accessible to the general public in Toronto interested in being engaged with oversight of the Toronto Police Service Users: Board Administrator / Board Members. The website will also allow for more straightforward modification and recording of information directly related to tpsb meetings, to assist board admisistrators.
+We are building a website with a backend for the Toronto Police Services Board to allow administrators to record meeting information/minutes and display the information and agendas of these meetings to the general public. The website will help make Board meetings more accessible to the general public in Toronto interested in being engaged with oversight of the Toronto Police Service Users: Board Administrator / Board Members. The website will also allow for more straightforward modification and recording of information directly related to tpsb meetings, to assist board administrators.
 
 Currently the partner is using a 300-page long PDF to record this information and modifying it using Joomla CMS. This process is labour intensive and not very accessible to the public. The product will allow for all the information to be displayed clearly and for administrators to update and add to the information easily.
 
@@ -41,17 +41,19 @@ There are two ways to run the backend locally:
 
 ### Option 1: Manual setup
 
+These steps assume you are on a UNIX-based system like Linux or MacOS, but the steps on Windows are similar.
+
 - To set up the Python backend’s dependencies, we are using Pipenv (install using `pip install pipenv` or `pip3 install pipenv`). To install the dependencies, navigate to the project directory and run `pipenv install`. Note that the dependencies are listed in the `Pipfile` and their versions in the `Pipfile.lock`.
+- For PDF generation, you will also need [wkhtmltopdf](https://wkhtmltopdf.org/downloads.html) installed on your system.
 - To activate the virtual environment, run `pipenv shell`.
-- Set up the database using `python manage.py makemigrations` and `python manage.py migrate`.
-- Create a new user with `python manage.py createsuperuser` which will prompt you for credentials.
-- Run the development server using `python manage.py runserver`.
+- To set up a clean slate for Django, including a development database and admin user, run `./reset.sh`. You may need to run `chmod +x reset.sh` to make the script executable.
+- To run the development server, use `python manage.py runserver`.
 
 ### Option 2: Docker
 
 Make sure you have Docker installed on your machine.
 
-- Build the docker image using `docker build -t backend .` (you may need `sudo` if you are on Linux)
+- Build the docker image using `docker build -t backend:latest --build-arg FRONTEND_URL={frontend URL} --build-arg BACKEND_URL={backend URL} .` (you may need `sudo` if you are on Linux)
 - Run the docker image using `docker run -e "PORT=8080" -p 8080:8080 backend` (again, you may need `sudo`). You can use whichever port you’d like.
 
 ### Frontend
@@ -61,6 +63,10 @@ For the frontend, you will need `npm`.
 - To install the dependencies, run `npm install`.
 - You can run the frontend using `npm start`.
 - To produce a minified build for deployment, use `npm run build`.
+
+## Handoff
+
+See [Handoff.md](Handoff.md) for handoff instructions.
 
 ## Deployment and Github Workflow
 
@@ -74,7 +80,7 @@ For deployment, we use automation through GitHub Actions. The backend is deploye
 
 For all of our GitHub Actions workflows, we made sure to implement caching of the dependencies/libraries and build artifacts so that subsequent runs of the workflows would be much faster. This way, we do not waste Actions time.
 
-We decided to use severless platforms for deployment like Google Cloud Run and Firebase in order to simplify deployment and the eventual handoff to our partner. This way, we do not have to manage server infrastructure such as VMs, and because we are testing our code with low volume, we easily fall into the free tier of GCP.
+We decided to use serverless platforms for deployment like Google Cloud Run and Firebase in order to simplify deployment and the eventual handoff to our partner. This way, we do not have to manage server infrastructure such as VMs, and because we are testing our code with low volume, we easily fall into the free tier of GCP.
 
 ## Licenses
 
