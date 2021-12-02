@@ -19,7 +19,7 @@ export default class Agenda extends React.Component {
     if (!data) {
       this.setState({errors:true});
     }
-    this.setState({ data: data});
+    this.setState({ data: data[0]});
 
     const meetingData = await BackendMethods.fetchItems("Meeting/" + this.props.match.params.meetingId + "/");
     if (!meetingData) {
@@ -54,7 +54,7 @@ export default class Agenda extends React.Component {
         </div>
         <div>
 
-          <AgendaItem agenda={this.state.data[0]}/>
+          <AgendaItem agenda={this.state.data}/>
         </div>
         <br></br>
       </div>;

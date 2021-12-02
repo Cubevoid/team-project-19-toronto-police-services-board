@@ -37,12 +37,12 @@ class Agenda(models.Model):
     def __str__(self) -> str:
         return f'{self.meeting.title} Agenda'
 
-    def generate_pdf(self) : 
+    def generate_pdf(self) :
         import meetings.create_pdf as create_pdf
         create_pdf.generate_agenda_pdf(self, os.path.join(settings.BASE_DIR, f"uploads/{self.pk}.pdf"))
         return mark_safe(f'<a class="button" href="{f"/uploads/{self.pk}.pdf"}">Generate PDF</a>')
 
-    
+
 class AgendaItem(models.Model):
     agenda = models.ForeignKey(Agenda, on_delete=CASCADE)
     number = models.FloatField('Agenda Item Number')
@@ -70,27 +70,33 @@ class Attachment(models.Model):
         return f'{self.name} ({os.path.basename(self.attachment.__str__())})'
 
 
-class Minutes(models.Model):
+class Minute(models.Model):
     meeting = models.OneToOneField(Meeting, on_delete=CASCADE)
     minute_type = models.CharField('Minute Type',
                                     choices=MEETING_TYPES,
                                     max_length=4,
                                     default='PUB')
     minute_date = models.DateField('Minute Date')
-    minute_subitem = models.FloatField('Minute Subitem')
+    attendants =  models.TextField('Attendants', help_text="Separate Attendees by Commas")
+
+    def __str__(self) -> str:
+        return f'{self.meeting.title} Minute'
+
+    class Meta:
+        verbose_name_plural = "Minutes"
+
+
+class MinuteItem(models.Model):
+    minute = models.ForeignKey(Minute, on_delete=CASCADE)
+    subitem_number = models.FloatField('Minute Subitem')
     title = models.CharField('Title', max_length=200)
     notes = RichTextUploadingField('Notes', blank=True)
     recommendation = RichTextUploadingField('Recommendations', blank=True)
     mover = models.CharField('Mover', max_length=120)
     seconder = models.CharField('Seconder', max_length=120)
-    attendant =  models.TextField('Attendants', help_text="Separate Attendees by Commas")
-
 
     def __str__(self) -> str:
-        return f'{self.meeting.title} Minutes'
-
-    class Meta:
-        verbose_name_plural = "Minutes"
+        return f'[{self.mover}] {self.subitem_number}. {self.title}'
 
 
 class AgendaTemplate(SingletonModel):
@@ -100,7 +106,6 @@ class AgendaTemplate(SingletonModel):
 
     def __str__(self) -> str:
         return "Agenda Template"
-    
+
     class Meta:
         verbose_name_plural = "Agenda Template"
-
