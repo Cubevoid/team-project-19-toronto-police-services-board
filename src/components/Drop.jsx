@@ -29,7 +29,7 @@ export default class Drop extends React.Component {
     this.setState({ data: data});
 
     this.setState({agenda : this.state.data})
-    this.ITEM = "Meeting/" + this.state.currentMeeting.id + "/Minutes/"
+    this.ITEM = "Meeting/" + this.state.currentMeeting.id + "/Minute/"
 
     const url1 = BackendMethods.currentAdminUrl(this.ITEM);
     const response1 = await fetch(url1)
@@ -84,7 +84,7 @@ export default class Drop extends React.Component {
       const filtered = data.filter(minute => minute.meeting === Number(this.state.currentMeeting.id)).map((item) => (item))
 
       if (!(filtered.length === 0)) {
-        return <a href={"minutes/" + this.state.currentMeeting.id} target="_blank" className="sub-nav-text">
+        return <a href={"minute/" + this.state.currentMeeting.id} target="_blank" className="sub-nav-text">
           Read Minutes
         </a>
       }
