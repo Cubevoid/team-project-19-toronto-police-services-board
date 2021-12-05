@@ -8,6 +8,10 @@ class AgendaItemInline(admin.StackedInline):
     extra = 0
 
 
+class MinuteItemInLine(admin.StackedInline):
+    model = MinuteItem
+    extra = 0
+
 
 class AgendaAdmin(admin.ModelAdmin):
     inlines = [AgendaItemInline]
@@ -30,7 +34,8 @@ class MeetingAdmin(admin.ModelAdmin):
     search_fields = ('title',)
 
 
-class MinutesAdmin(admin.ModelAdmin):
+class MinuteAdmin(admin.ModelAdmin):
+    inlines = [MinuteItemInLine]
     list_display = ('meeting_title', 'meeting_date', 'meeting_type')
     search_fields = ('meeting',)
 
@@ -46,6 +51,6 @@ class MinutesAdmin(admin.ModelAdmin):
 
 # Register your models here.
 admin.site.register(Meeting, MeetingAdmin)
-admin.site.register(Minutes, MinutesAdmin)
+admin.site.register(Minute, MinuteAdmin)
 admin.site.register(Agenda, AgendaAdmin)
 admin.site.register(AgendaTemplate)

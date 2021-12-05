@@ -7,7 +7,7 @@ function Home() {
       <div className="container">
         <div className="align-items-center">
           <div className="main-icon">
-            <img src={require('./../img/tpsb_icon.png').default} />
+            <img src={require('./../img/tpsb_icon.png').default} alt="Toronto Police Services Board Icon"/>
           </div>
           <div className="col-lg-5">
             <p>

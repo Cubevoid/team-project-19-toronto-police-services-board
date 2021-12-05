@@ -35,6 +35,12 @@ class Meetings extends React.Component {
     }
   }
 
+  setCurrentMeetingKeyPress(e, meeting) {
+    if (e.key === 'Enter') {
+      this.setCurrentMeeting(meeting);
+    }
+  }
+
   displayMeetingDetails(thisMeeting) {
     return <div className="meeting-details">
       <div className="agenda-minutes-header-left">
@@ -76,7 +82,7 @@ class Meetings extends React.Component {
                 new Date(...b.date.substring(0, b.date.indexOf('T')).split('/').reverse()) -
                 new Date(...a.date.substring(0, a.date.indexOf('T')).split('/').reverse())).map((meeting) => {
                 return <Fragment>
-                  <tr key={meeting.id} onClick={() => this.setCurrentMeeting(meeting)}>
+                  <tr key={meeting.id} onClick={() => this.setCurrentMeeting(meeting)} tabIndex="0" onKeyDown={(e) => this.setCurrentMeetingKeyPress(e, meeting)}>
                     <td>{meeting.date.substring(0, meeting.date.indexOf('T'))}</td>
                     <td>{meeting.title}</td>
                     <td>{this.isPublic(meeting.meeting_type)}</td>

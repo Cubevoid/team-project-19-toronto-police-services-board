@@ -4,7 +4,7 @@ import Parser from 'html-react-parser';
 import BackendMethods from "./BackendMethods";
 import {CSSTransition} from 'react-transition-group';
 
-export default class AgendaItem extends React.Component {
+export default class MinuteItem extends React.Component {
 
   constructor(props) {
     super(props);
@@ -14,7 +14,7 @@ export default class AgendaItem extends React.Component {
       errors: false
     };
 
-    this.ITEM = "Meeting/" + this.props.agenda.meeting + "/Agenda/" + this.props.agenda.id + "/AgendaItem/"
+    this.ITEM = "Meeting/" + this.props.minute.meeting + "/Minute/" + this.props.minute.id + "/MinuteItem/"
   }
 
   async componentDidMount() {
@@ -25,17 +25,17 @@ export default class AgendaItem extends React.Component {
     this.setState({ data: data, loading: false });
   }
 
-  setCurrentAgendaItem(agendaItem) {
-    if (this.state.currentAgendaItem === agendaItem) {
-      this.setState({currentAgendaItem: "blah"})
+  setCurrentMinuteItem(minuteItem) {
+    if (this.state.currentMinuteItem === minuteItem) {
+      this.setState({currentMinuteItem: "blah"})
     } else {
-        this.setState({currentAgendaItem: agendaItem});
+        this.setState({currentMinuteItem: minuteItem});
     }
   }
 
-  setCurrentAgendaItemKeyPress(e, agendaItem) {
+  setCurrentMinuteItemKeyPress(e, minuteItem) {
     if (e.key === 'Enter') {
-      this.setCurrentAgendaItem(agendaItem);
+      this.setCurrentMinuteItem(minuteItem);
     }
   }
 
@@ -45,13 +45,14 @@ export default class AgendaItem extends React.Component {
     return POSSIBLE_DECISIONS[result].toUpperCase();
   }
 
-  displayAgendaItemDetails(item) {
+  displayMinuteItemDetails(item) {
     return <div>
       <img width="50%" src={require('./../img/tpsb_dropdown_header.png').default} alt="Toronto Police Services Board black and white icon header"/>
       <div>
-        <div style={{ textAlign: "Left" }}> {Parser(DOMPurify.sanitize(item.description))}</div>
-        {item.result && <div style={{fontWeight: 'bold'}}>STATUS: {this.displayResult(item.result)}</div>}
-        <div>{Parser(DOMPurify.sanitize(item.motion))}</div>
+        <div style={{ textAlign: "Left" }}> {Parser(DOMPurify.sanitize(item.recommendation))}</div>
+        <div style={{fontWeight: 'bold'}}>MOVERS: {item.mover}</div>
+        <div style={{fontWeight: 'bold'}}>SECONDERS: {item.seconder}</div>
+        <div>{Parser(DOMPurify.sanitize(item.notes))}</div>
         {item.file && <a className="download-attach" href={item.file} download>Download Attachments: {item.file ? item.file.split('/').pop() : item.file}</a>}
         <br></br>
       </div>
@@ -60,7 +61,7 @@ export default class AgendaItem extends React.Component {
 
   render() {
     if (this.state.errors) {
-      return <div>could not retrieve agenda information</div>
+      return <div>could not retrieve minute information</div>
     }
 
     if (this.state.loading) {
@@ -68,29 +69,29 @@ export default class AgendaItem extends React.Component {
     }
 
     if (!this.state.data) {
-      return <div>didn't get an agenda item</div>;
+      return <div>didn't get an minute item</div>;
     }
 
-    return <table className="agendaItem-table">
+    return <table className="minuteItem-table">
       <tbody>
         <tr>
           <th>Number</th>
           <th>Title</th>
         </tr>
-        {this.state.data.sort((a,b) => a.number - b.number).map((agendaItem) => {
+        {this.state.data.sort((a,b) => a.number - b.number).map((minuteItem) => {
           return <Fragment>
-            <tr key={agendaItem.id} onClick={() => this.setCurrentAgendaItem(agendaItem)} tabIndex="0" onKeyDown={(e) => this.setCurrentAgendaItemKeyPress(e, agendaItem)}>
-              <td>{agendaItem.number}</td>
-              <td>{agendaItem.title}</td>
+            <tr key={minuteItem.id} onClick={() => this.setCurrentMinuteItem(minuteItem)} tabIndex="0" onKeyDown={(e) => this.setCurrentMinuteItemKeyPress(e, minuteItem)}>
+              <td>{minuteItem.subitem_number}</td>
+              <td>{minuteItem.title}</td>
             </tr>
             <tr className="trh">
               <td height="auto" colspan="2" padding="0">
-                <CSSTransition in={this.state.currentAgendaItem && this.state.currentAgendaItem === agendaItem}
+                <CSSTransition in={this.state.currentMinuteItem && this.state.currentMinuteItem === minuteItem}
                                 timeout={1000}
                                 classNames="dropdown"
                                 unmountOnExit>
                   <div height="auto" position="relative">
-                    {this.state.currentAgendaItem && this.displayAgendaItemDetails(agendaItem)}
+                    {this.state.currentMinuteItem && this.displayMinuteItemDetails(minuteItem)}
                   </div>
                 </CSSTransition>
               </td>

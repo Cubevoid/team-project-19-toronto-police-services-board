@@ -29,7 +29,7 @@ export default class Drop extends React.Component {
     this.setState({ data: data});
 
     this.setState({agenda : this.state.data})
-    this.ITEM = "Meeting/" + this.state.currentMeeting.id + "/Minutes/"
+    this.ITEM = "Meeting/" + this.state.currentMeeting.id + "/Minute/"
 
     const url1 = BackendMethods.currentAdminUrl(this.ITEM);
     const response1 = await fetch(url1)
@@ -46,6 +46,19 @@ export default class Drop extends React.Component {
     this.setState({ data: data1, loading: false});
 
     this.setState({minutes : this.state.data})
+  }
+
+  setAgendaDownload() {
+    const data = this.state.agenda
+    if (data[0]) {
+      return <a href={BackendMethods.currentAdminUploadUrl(data[0].id + '.pdf/')} target="_blank" className="sub-nav-text">
+        Download Agenda
+      </a>
+    }
+
+    return <a className="sub-nav-blank">
+      Download Agenda
+    </a>
   }
 
   setAgenda() {
@@ -84,7 +97,7 @@ export default class Drop extends React.Component {
       const filtered = data.filter(minute => minute.meeting === Number(this.state.currentMeeting.id)).map((item) => (item))
 
       if (!(filtered.length === 0)) {
-        return <a href={"minutes/" + this.state.currentMeeting.id} target="_blank" className="sub-nav-text">
+        return <a href={"minute/" + this.state.currentMeeting.id} target="_blank" className="sub-nav-text">
           Read Minutes
         </a>
       }
@@ -105,9 +118,14 @@ export default class Drop extends React.Component {
     }
 
     return <ul className="agenda-minutes-header-right">
-      <li className="nav-agenda-minute-1">
-        {this.setAgenda()}
-      </li>
+      <div>
+        <li className="nav-agenda-minute-2">
+          {this.setAgenda()}
+        </li>
+        <li className="nav-agenda-minute-2">
+          {this.setAgendaDownload()}
+        </li>
+      </div>
       <li className="nav-agenda-minute-1">
         {this.setYouTubeLink()}
       </li>
