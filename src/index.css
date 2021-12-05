@@ -159,6 +159,14 @@ tr.trh:hover {
   background-color: white;
 }
 
+.minuteItem-table {
+  justify-content: center;
+  max-width: 80%;
+  align-items: center;
+  float: none;
+  margin: 0 auto;
+}
+
 .agendaItem-table {
   justify-content: center;
   max-width: 80%;
@@ -219,11 +227,20 @@ tr.trh:hover {
   justify-content: right;
 }
 
+.nav-agenda-minute-2 {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 0.6rem;
+  padding-bottom: 0.6rem;
+  padding-left: 0.6rem;
+}
+
 .nav-agenda-minute-1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: 0.6rem;
+  padding-bottom: 0.6rem;
 }
 
 .sub-nav-blank {
@@ -251,11 +268,19 @@ tr.trh:hover {
   overflow-y: auto;
 }
 
+.meetingDescription {
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 80%;
+}
+
 .header {
   font-weight: 200;
 }
 
 .download-attach {
-  color: grey;
+  color: blue;
   text-decoration: underline;
 }

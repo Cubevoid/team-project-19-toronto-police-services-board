@@ -33,6 +33,12 @@ export default class AgendaItem extends React.Component {
     }
   }
 
+  setCurrentAgendaItemKeyPress(e, agendaItem) {
+    if (e.key === 'Enter') {
+      this.setCurrentAgendaItem(agendaItem);
+    }
+  }
+
   displayResult(result) {
     const POSSIBLE_DECISIONS = {'TBC': 'To be considered', 'CUC': 'Currently under consideration', 'A': 'Approved',
                             'AWM': 'Approved with motion', 'R': 'Rejected'};
@@ -41,7 +47,7 @@ export default class AgendaItem extends React.Component {
 
   displayAgendaItemDetails(item) {
     return <div>
-      <img width="50%" src={require('./../img/tpsb_dropdown_header.png').default} />
+      <img width="50%" src={require('./../img/tpsb_dropdown_header.png').default} alt="Toronto Police Services Board black and white icon header"/>
       <div>
         <div style={{ textAlign: "Left" }}> {Parser(DOMPurify.sanitize(item.description))}</div>
         {item.result && <div style={{fontWeight: 'bold'}}>STATUS: {this.displayResult(item.result)}</div>}
@@ -73,12 +79,12 @@ export default class AgendaItem extends React.Component {
         </tr>
         {this.state.data.sort((a,b) => a.number - b.number).map((agendaItem) => {
           return <Fragment>
-            <tr key={agendaItem.id} onClick={() => this.setCurrentAgendaItem(agendaItem)}>
+            <tr key={agendaItem.id} onClick={() => this.setCurrentAgendaItem(agendaItem)} tabIndex="0" onKeyDown={(e) => this.setCurrentAgendaItemKeyPress(e, agendaItem)}>
               <td>{agendaItem.number}</td>
               <td>{agendaItem.title}</td>
             </tr>
             <tr className="trh">
-              <td height="auto" colspan="3" padding="0">
+              <td height="auto" colspan="2" padding="0">
                 <CSSTransition in={this.state.currentAgendaItem && this.state.currentAgendaItem === agendaItem}
                                 timeout={1000}
                                 classNames="dropdown"

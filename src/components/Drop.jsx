@@ -48,6 +48,19 @@ export default class Drop extends React.Component {
     this.setState({minutes : this.state.data})
   }
 
+  setAgendaDownload() {
+    const data = this.state.agenda
+    if (data[0]) {
+      return <a href={BackendMethods.currentAdminUploadUrl(data[0].id + '.pdf/')} target="_blank" className="sub-nav-text">
+        Download Agenda
+      </a>
+    }
+
+    return <a className="sub-nav-blank">
+      Download Agenda
+    </a>
+  }
+
   setAgenda() {
     const data = this.state.agenda
     if (data) {
@@ -105,9 +118,14 @@ export default class Drop extends React.Component {
     }
 
     return <ul className="agenda-minutes-header-right">
-      <li className="nav-agenda-minute-1">
-        {this.setAgenda()}
-      </li>
+      <div>
+        <li className="nav-agenda-minute-2">
+          {this.setAgenda()}
+        </li>
+        <li className="nav-agenda-minute-2">
+          {this.setAgendaDownload()}
+        </li>
+      </div>
       <li className="nav-agenda-minute-1">
         {this.setYouTubeLink()}
       </li>

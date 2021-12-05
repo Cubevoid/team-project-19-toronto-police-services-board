@@ -5,6 +5,10 @@ export default class BackendMethods {
     return (window.location.hostname.includes("localhost") && process.env.REACT_APP_USE_BACKEND_URL === 'false') ? 'http://' + window.location.hostname + ':' + this.PATH + '/api/' + item : process.env.REACT_APP_BACKEND_URL + '/api/' + item;
   }
 
+  static currentAdminUploadUrl(item) {
+    return (window.location.hostname.includes("localhost") && process.env.REACT_APP_USE_BACKEND_URL === 'false') ? 'http://' + window.location.hostname + ':' + this.PATH + '/uploads/' + item : process.env.REACT_APP_BACKEND_URL + '/uploads/' + item;
+  }
+
   static async fetchItems(item) {
     const url = this.currentAdminUrl(item);
     var errors = false;
