@@ -1,13 +1,20 @@
 from rest_framework import serializers
-from .models import Minutes
+from .models import Minute
+from .models import MinuteItem
 from .models import Agenda
 from .models import AgendaItem
 from .models import Meeting
 
-class MeetingMinutesSerializer(serializers.ModelSerializer):
+class MinuteSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Minutes
+        model = Minute
         fields = '__all__'
+
+class MinuteItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MinuteItem
+        fields = '__all__'
+
 class AgendaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Agenda

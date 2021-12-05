@@ -1,9 +1,10 @@
 import React from "react";
 import DOMPurify from 'dompurify';
 import Parser from 'html-react-parser';
+import MinuteItem from "./MinuteItem.jsx"
 import BackendMethods from "./BackendMethods";
 
-export default class FetchMinutes extends React.Component {
+export default class Minute extends React.Component {
   constructor(props, match) {
     super(props);
 
@@ -11,7 +12,7 @@ export default class FetchMinutes extends React.Component {
       loading: true,
       errors: false
     };
-    this.ITEM = "Meeting/" + this.props.match.params.meetingId + "/Minutes/"
+    this.ITEM = "Meeting/" + this.props.match.params.meetingId + "/Minute/"
   }
 
   async componentDidMount() {
@@ -47,7 +48,7 @@ export default class FetchMinutes extends React.Component {
     }
 
     return <div>
-        <div className="agenda-title">
+        <div className="minute-title">
           <div className="flex"><img src={require('./../img/tpsb_icon.png').default} /></div>
           <br></br>
           <h1 style={{ textAlign: "Center" }}>Online Virtual Meeting</h1>
@@ -58,13 +59,8 @@ export default class FetchMinutes extends React.Component {
           <h3 style={{ textAlign: "Center" }}>{this.state.data.minute_date}</h3>
         </div>
         <div>
-          <h3 style={{ textAlign: "Center" }}>{this.state.data.title}</h3>
-          <div>{Parser(DOMPurify.sanitize(this.state.data.reccomendation))}</div>
-          <p>Mover: {this.state.data.mover}</p>
-          <p>Seconder: {this.state.data.seconder}</p>
-          <p>Attendant: {this.state.data.attendant}</p>
-          <br></br>
-          <div>{Parser(DOMPurify.sanitize(this.state.data.notes))}</div>
+
+          <MinuteItem minute={this.state.data}/>
         </div>
         <br></br>
       </div>
