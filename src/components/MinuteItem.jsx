@@ -33,6 +33,12 @@ export default class MinuteItem extends React.Component {
     }
   }
 
+  setCurrentMinuteItemKeyPress(e, minuteItem) {
+    if (e.key === 'Enter') {
+      this.setCurrentMinuteItem(minuteItem);
+    }
+  }
+
   displayResult(result) {
     const POSSIBLE_DECISIONS = {'TBC': 'To be considered', 'CUC': 'Currently under consideration', 'A': 'Approved',
                             'AWM': 'Approved with motion', 'R': 'Rejected'};
@@ -41,7 +47,7 @@ export default class MinuteItem extends React.Component {
 
   displayMinuteItemDetails(item) {
     return <div>
-      <img width="50%" src={require('./../img/tpsb_dropdown_header.png').default} />
+      <img width="50%" src={require('./../img/tpsb_dropdown_header.png').default} alt="Toronto Police Services Board black and white icon header"/>
       <div>
         <div style={{ textAlign: "Left" }}> {Parser(DOMPurify.sanitize(item.recommendation))}</div>
         <div style={{fontWeight: 'bold'}}>MOVERS: {item.mover}</div>
@@ -74,12 +80,12 @@ export default class MinuteItem extends React.Component {
         </tr>
         {this.state.data.sort((a,b) => a.number - b.number).map((minuteItem) => {
           return <Fragment>
-            <tr key={minuteItem.id} onClick={() => this.setCurrentMinuteItem(minuteItem)}>
+            <tr key={minuteItem.id} onClick={() => this.setCurrentMinuteItem(minuteItem)} tabIndex="0" onKeyDown={(e) => this.setCurrentMinuteItemKeyPress(e, minuteItem)}>
               <td>{minuteItem.subitem_number}</td>
               <td>{minuteItem.title}</td>
             </tr>
             <tr className="trh">
-              <td height="auto" colspan="3" padding="0">
+              <td height="auto" colspan="2" padding="0">
                 <CSSTransition in={this.state.currentMinuteItem && this.state.currentMinuteItem === minuteItem}
                                 timeout={1000}
                                 classNames="dropdown"

@@ -5,6 +5,10 @@ export default class BackendMethods {
     return window.location.hostname.includes("localhost") ? 'http://' + window.location.hostname + ':' + this.PATH + '/api/' + item : 'https://backend-smtcuvoqba-uc.a.run.app/' + 'api/' + item;
   }
 
+  static currentAdminUploadUrl(item) {
+    return window.location.hostname.includes("localhost") ? 'http://' + window.location.hostname + ':' + this.PATH + '/uploads/' + item : 'https://backend-smtcuvoqba-uc.a.run.app/' + 'uploads/' + item;
+  }
+
   static async fetchItems(item) {
     const url = this.currentAdminUrl(item);
     var errors = false;
