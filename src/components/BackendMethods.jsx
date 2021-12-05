@@ -6,7 +6,7 @@ export default class BackendMethods {
   }
 
   static currentAdminUploadUrl(item) {
-    return window.location.hostname.includes("localhost") ? 'http://' + window.location.hostname + ':' + this.PATH + '/uploads/' + item : 'https://backend-smtcuvoqba-uc.a.run.app/' + 'uploads/' + item;
+    return (window.location.hostname.includes("localhost") && process.env.REACT_APP_USE_BACKEND_URL === 'false') ? 'http://' + window.location.hostname + ':' + this.PATH + '/uploads/' + item : process.env.REACT_APP_BACKEND_URL + '/uploads/' + item;
   }
 
   static async fetchItems(item) {
