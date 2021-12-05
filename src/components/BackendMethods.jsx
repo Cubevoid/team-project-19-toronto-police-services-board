@@ -2,7 +2,7 @@ export default class BackendMethods {
   static PATH = '8000'
 
   static currentAdminUrl(item) {
-    return window.location.hostname.includes("localhost") ? 'http://' + window.location.hostname + ':' + this.PATH + '/api/' + item : 'https://backend-smtcuvoqba-uc.a.run.app/' + 'api/' + item;
+    return window.location.hostname.includes("localhost") ? 'http://' + window.location.hostname + ':' + this.PATH + '/api/' + item : process.env.REACT_APP_DEPLOYMENT_URL + '/api/' + item;
   }
 
   static async fetchItems(item) {
