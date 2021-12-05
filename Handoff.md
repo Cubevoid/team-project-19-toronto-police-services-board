@@ -48,9 +48,9 @@ You will probably need to remove the current `.firebaserc` and `firebase.json` f
 
 The react frontend has environment variables that can be changed located in .env. These will work for the project as it is now, however may need to be changed for future iterations or for testing.
 
-REACT_APP_DEPLOYMENT_URL determines the URL used when not running the server locally (through npm start). This is the url which will be accessed when deployed to firebase.
-REACT_APP_ALWAYS_USE_DEPLOYMENT_URL is set to false. If set to true then the REACT_APP_DEPLOYMENT_URL will always be used even on the locally run server, which may be useful for testing purposes during url setup.
-REACT_APP_DEVELOPMENT_BACKEND_PORT determines the port number when the server is run locally.
+REACT_APP_BACKEND_URL determines the URL used when not running the server locally (through npm start). This is the url which will be accessed when deployed to firebase.
+REACT_APP_USE_BACKEND_URL is set to false. If set to true then the REACT_APP_BACKEND_URL will always be used even on the locally run server, which may be useful for testing purposes during url setup.
+REACT_APP_DEFAULT_PORT determines the port number when the server is run locally. 
 
 ### Running the Project
 
